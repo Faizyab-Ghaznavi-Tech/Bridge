@@ -1,32 +1,35 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'bridgeb-secret-key-2024';
+export const authenticateToken = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
 
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Access token required' });
-  }
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
+    if (!token) {
+      return res.status(401).json({ message: 'Access token required' });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select('-password');
+    
+    if (!user || !user.isActive) {
+      return res.status(401).json({ message: 'Invalid token or inactive user' });
+    }
+
     req.user = user;
     next();
-  });
+  } catch (error) {
+    return res.status(403).json({ message: 'Invalid or expired token' });
+  }
 };
 
-export const generateToken = (user) => {
-  return jwt.sign(
-    { 
-      id: user.id, 
-      email: user.email, 
-      name: user.name 
-    },
-    JWT_SECRET,
-    { expiresIn: '7d' }
-  );
+export const requireAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Admin access required' });
+  }
 };
+
+export const requireAuth = authenticateToken;

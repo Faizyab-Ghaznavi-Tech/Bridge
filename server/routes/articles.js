@@ -1,166 +1,204 @@
 import express from 'express';
-import { getDatabase } from '../database/init.js';
-import { authenticateToken } from '../middleware/auth.js';
+import Article from '../models/Article.js';
+import User from '../models/User.js';
+import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all articles (public)
-router.get('/', (req, res) => {
+// Get all approved articles (public)
+router.get('/', async (req, res) => {
   try {
-    const db = getDatabase();
-    
-    db.all(
-      'SELECT id, title, content, author_name, created_at, updated_at FROM articles ORDER BY created_at DESC',
-      (err, articles) => {
-        if (err) {
-          return res.status(500).json({ message: 'Database error' });
-        }
-        res.json({ articles });
-      }
-    );
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
+    const { category, search, page = 1, limit = 10 } = req.query;
+    const query = { status: 'approved' };
 
-// Get user's articles
-router.get('/mine', authenticateToken, (req, res) => {
-  try {
-    const db = getDatabase();
-    
-    db.all(
-      'SELECT * FROM articles WHERE author_id = ? ORDER BY created_at DESC',
-      [req.user.id],
-      (err, articles) => {
-        if (err) {
-          return res.status(500).json({ message: 'Database error' });
-        }
-        res.json({ articles });
-      }
-    );
+    if (category && category !== 'all') {
+      query.category = category;
+    }
+
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { abstract: { $regex: search, $options: 'i' } },
+        { keywords: { $in: [new RegExp(search, 'i')] } }
+      ];
+    }
+
+    const articles = await Article.find(query)
+      .populate('author', 'username institution')
+      .sort({ createdAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    const total = await Article.countDocuments(query);
+
+    res.json({
+      articles,
+      totalPages: Math.ceil(total / limit),
+      currentPage: parseInt(page),
+      total
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Get articles error:', error);
+    res.status(500).json({ message: 'Failed to fetch articles' });
   }
 });
 
 // Get single article
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const db = getDatabase();
-    
-    db.get('SELECT * FROM articles WHERE id = ?', [req.params.id], (err, article) => {
-      if (err) {
-        return res.status(500).json({ message: 'Database error' });
-      }
+    const article = await Article.findById(req.params.id)
+      .populate('author', 'username institution bio');
 
-      if (!article) {
-        return res.status(404).json({ message: 'Article not found' });
-      }
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
 
-      res.json({ article });
+    // Only show approved articles to non-authors
+    if (article.status !== 'approved' && (!req.user || req.user._id.toString() !== article.author._id.toString())) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
+    // Increment views
+    article.views += 1;
+    await article.save();
+
+    res.json(article);
+  } catch (error) {
+    console.error('Get article error:', error);
+    res.status(500).json({ message: 'Failed to fetch article' });
+  }
+});
+
+// Get user's articles
+router.get('/user/mine', authenticateToken, async (req, res) => {
+  try {
+    const articles = await Article.find({ author: req.user._id })
+      .sort({ createdAt: -1 });
+
+    res.json(articles);
+  } catch (error) {
+    console.error('Get user articles error:', error);
+    res.status(500).json({ message: 'Failed to fetch your articles' });
+  }
+});
+
+// Get pending articles (admin only)
+router.get('/admin/pending', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const articles = await Article.find({ status: 'pending' })
+      .populate('author', 'username email institution')
+      .sort({ createdAt: -1 });
+
+    res.json(articles);
+  } catch (error) {
+    console.error('Get pending articles error:', error);
+    res.status(500).json({ message: 'Failed to fetch pending articles' });
+  }
+});
+
+// Submit new article
+router.post('/', authenticateToken, async (req, res) => {
+  try {
+    const { title, content, abstract, keywords, category } = req.body;
+
+    const article = new Article({
+      title,
+      content,
+      abstract,
+      keywords: keywords || [],
+      category,
+      author: req.user._id
+    });
+
+    await article.save();
+    await article.populate('author', 'username institution');
+
+    res.status(201).json({
+      message: 'Article submitted successfully! It will be reviewed by administrators.',
+      article
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Submit article error:', error);
+    res.status(500).json({ message: 'Failed to submit article' });
   }
 });
 
-// Create article
-router.post('/', authenticateToken, (req, res) => {
+// Approve article (admin only)
+router.put('/:id/approve', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const article = await Article.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: 'approved',
+        approvedBy: req.user._id,
+        approvedAt: new Date(),
+        rejectionReason: ''
+      },
+      { new: true }
+    ).populate('author', 'username email');
 
-    if (!title || !content) {
-      return res.status(400).json({ message: 'Title and content are required' });
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
     }
 
-    if (title.length < 3) {
-      return res.status(400).json({ message: 'Title must be at least 3 characters' });
-    }
-
-    if (content.length < 10) {
-      return res.status(400).json({ message: 'Content must be at least 10 characters' });
-    }
-
-    const db = getDatabase();
-    
-    db.run(
-      'INSERT INTO articles (title, content, author_id, author_name) VALUES (?, ?, ?, ?)',
-      [title, content, req.user.id, req.user.name],
-      function(err) {
-        if (err) {
-          return res.status(500).json({ message: 'Error creating article' });
-        }
-
-        res.status(201).json({
-          message: 'Article published successfully',
-          article: {
-            id: this.lastID,
-            title,
-            content,
-            author_name: req.user.name,
-            created_at: new Date().toISOString()
-          }
-        });
-      }
-    );
+    res.json({
+      message: 'Article approved successfully',
+      article
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Approve article error:', error);
+    res.status(500).json({ message: 'Failed to approve article' });
   }
 });
 
-// Update article
-router.put('/:id', authenticateToken, (req, res) => {
+// Reject article (admin only)
+router.put('/:id/reject', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { reason } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({ message: 'Title and content are required' });
+    const article = await Article.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: 'rejected',
+        rejectionReason: reason || 'No reason provided'
+      },
+      { new: true }
+    ).populate('author', 'username email');
+
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
     }
 
-    const db = getDatabase();
-    
-    db.run(
-      'UPDATE articles SET title = ?, content = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND author_id = ?',
-      [title, content, req.params.id, req.user.id],
-      function(err) {
-        if (err) {
-          return res.status(500).json({ message: 'Error updating article' });
-        }
-
-        if (this.changes === 0) {
-          return res.status(404).json({ message: 'Article not found or unauthorized' });
-        }
-
-        res.json({ message: 'Article updated successfully' });
-      }
-    );
+    res.json({
+      message: 'Article rejected',
+      article
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Reject article error:', error);
+    res.status(500).json({ message: 'Failed to reject article' });
   }
 });
 
 // Delete article
-router.delete('/:id', authenticateToken, (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   try {
-    const db = getDatabase();
-    
-    db.run(
-      'DELETE FROM articles WHERE id = ? AND author_id = ?',
-      [req.params.id, req.user.id],
-      function(err) {
-        if (err) {
-          return res.status(500).json({ message: 'Error deleting article' });
-        }
+    const article = await Article.findById(req.params.id);
 
-        if (this.changes === 0) {
-          return res.status(404).json({ message: 'Article not found or unauthorized' });
-        }
+    if (!article) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
 
-        res.json({ message: 'Article deleted successfully' });
-      }
-    );
+    // Allow deletion by author or admin
+    if (article.author.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Not authorized to delete this article' });
+    }
+
+    await Article.findByIdAndDelete(req.params.id);
+
+    res.json({ message: 'Article deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Delete article error:', error);
+    res.status(500).json({ message: 'Failed to delete article' });
   }
 });
 

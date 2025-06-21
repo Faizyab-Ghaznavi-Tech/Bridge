@@ -1,104 +1,150 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
-import { getDatabase } from '../database/init.js';
-import { generateToken } from '../middleware/auth.js';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password, institution } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
+    // Check if user already exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: existingUser.email === email ? 'Email already registered' : 'Username already taken'
+      });
     }
 
-    if (password.length < 6) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters' });
-    }
+    // Create new user
+    const user = new User({
+      username,
+      email,
+      password,
+      institution: institution || ''
+    });
 
-    const db = getDatabase();
-    
-    // Check if user exists
-    db.get('SELECT * FROM users WHERE email = ?', [email], async (err, existingUser) => {
-      if (err) {
-        return res.status(500).json({ message: 'Database error' });
+    await user.save();
+
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(201).json({
+      message: 'Registration successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        institution: user.institution
       }
-
-      if (existingUser) {
-        return res.status(400).json({ message: 'User already exists with this email' });
-      }
-
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 12);
-
-      // Insert user
-      db.run(
-        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-        [name, email, hashedPassword],
-        function(err) {
-          if (err) {
-            return res.status(500).json({ message: 'Error creating user' });
-          }
-
-          const user = { id: this.lastID, name, email };
-          const token = generateToken(user);
-
-          res.status(201).json({
-            message: 'User created successfully',
-            token,
-            user: { id: user.id, name, email }
-          });
-        }
-      );
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Registration error:', error);
+    res.status(500).json({ message: 'Registration failed. Please try again.' });
   }
 });
 
 // Login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user || !user.isActive) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const db = getDatabase();
-    
-    db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {
-      if (err) {
-        return res.status(500).json({ message: 'Database error' });
-      }
+    // Check password
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
 
-      if (!user) {
-        return res.status(400).json({ message: 'Invalid email or password' });
-      }
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
-        return res.status(400).json({ message: 'Invalid email or password' });
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        institution: user.institution,
+        bio: user.bio
       }
-
-      const token = generateToken(user);
-      
-      res.json({
-        message: 'Login successful',
-        token,
-        user: { 
-          id: user.id, 
-          name: user.name, 
-          email: user.email,
-          bio: user.bio,
-          institution: user.institution
-        }
-      });
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Login failed. Please try again.' });
+  }
+});
+
+// Get current user
+router.get('/me', authenticateToken, async (req, res) => {
+  res.json({
+    user: {
+      id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+      role: req.user.role,
+      institution: req.user.institution,
+      bio: req.user.bio,
+      profilePicture: req.user.profilePicture
+    }
+  });
+});
+
+// Update profile
+router.put('/profile', authenticateToken, async (req, res) => {
+  try {
+    const { username, institution, bio } = req.body;
+    
+    // Check if username is taken by another user
+    if (username !== req.user.username) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Username already taken' });
+      }
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { username, institution, bio },
+      { new: true }
+    );
+
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        institution: updatedUser.institution,
+        bio: updatedUser.bio
+      }
+    });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    res.status(500).json({ message: 'Failed to update profile' });
   }
 });
 

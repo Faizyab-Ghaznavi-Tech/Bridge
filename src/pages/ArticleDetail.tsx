@@ -1,61 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, User, Calendar, BookOpen, Edit, Trash2 } from 'lucide-react';
-import { articlesAPI } from '../utils/api';
-import { useAuth } from '../contexts/AuthContext';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useParams, Link } from 'react-router-dom';
+import { Calendar, Clock, User, Eye, Tag, ArrowLeft, Building } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Article {
-  id: number;
+  _id: string;
   title: string;
   content: string;
-  author_id: number;
-  author_name: string;
-  created_at: string;
-  updated_at: string;
+  abstract: string;
+  keywords: string[];
+  author: {
+    username: string;
+    institution?: string;
+    bio?: string;
+  };
+  category: string;
+  createdAt: string;
+  readTime: number;
+  views: number;
 }
 
-const ArticleDetail = () => {
+const ArticleDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { user } = useAuth();
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const API_BASE = 'http://localhost:3001/api';
+
   useEffect(() => {
-    if (id) {
-      fetchArticle(id);
-    }
+    fetchArticle();
   }, [id]);
 
-  const fetchArticle = async (articleId: string) => {
+  const fetchArticle = async () => {
+    if (!id) return;
+
+    setIsLoading(true);
     try {
-      const response = await articlesAPI.getById(articleId);
-      setArticle(response.data.article);
-    } catch (error: any) {
-      if (error.response?.status === 404) {
-        toast.error('Article not found');
-        navigate('/research-articles');
-      } else {
-        toast.error('Failed to load article');
+      const response = await fetch(`${API_BASE}/articles/${id}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Article not found');
       }
+
+      setArticle(data);
+    } catch (error: any) {
+      console.error('Failed to fetch article:', error);
+      toast.error(error.message || 'Failed to load article');
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!article || !window.confirm('Are you sure you want to delete this article?')) {
-      return;
-    }
-
-    try {
-      await articlesAPI.delete(article.id.toString());
-      toast.success('Article deleted successfully');
-      navigate('/published-articles');
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to delete article');
     }
   };
 
@@ -63,18 +56,14 @@ const ArticleDetail = () => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: 'numeric'
     });
   };
-
-  const isAuthor = user && article && user.id === article.author_id;
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <LoadingSpinner size="lg\" text="Loading article..." />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
       </div>
     );
   }
@@ -83,16 +72,17 @@ const ArticleDetail = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Article Not Found</h2>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Article Not Found
+          </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
             The article you're looking for doesn't exist or has been removed.
           </p>
           <Link
-            to="/research-articles"
-            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            to="/articles"
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Articles
           </Link>
         </div>
@@ -101,123 +91,188 @@ const ArticleDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Navigation */}
-        <div className="mb-8">
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <Link
+          to="/articles"
+          className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Articles
+        </Link>
+
+        {/* Article Header */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
+          <div className="mb-4">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+              <Tag className="w-4 h-4 mr-1" />
+              {article.category}
+            </span>
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            {article.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-6">
+            <div className="flex items-center">
+              <User className="w-4 h-4 mr-2" />
+              <span className="font-medium">{article.author.username}</span>
+            </div>
+            {article.author.institution && (
+              <div className="flex items-center">
+                <Building className="w-4 h-4 mr-2" />
+                <span>{article.author.institution}</span>
+              </div>
+            )}
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 mr-2" />
+              <span>{formatDate(article.createdAt)}</span>
+            </div>
+            <div className="flex items-center">
+              <Clock className="w-4 h-4 mr-2" />
+              <span>{article.readTime} min read</span>
+            </div>
+            <div className="flex items-center">
+              <Eye className="w-4 h-4 mr-2" />
+              <span>{article.views} views</span>
+            </div>
+          </div>
+
+          {/* Abstract */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Abstract
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {article.abstract}
+            </p>
+          </div>
+
+          {/* Keywords */}
+          {article.keywords && article.keywords.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Keywords:
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {article.keywords.map((keyword, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-md"
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Article */}
-        <article className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-          {/* Header */}
-          <div className="p-8 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex-1">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
-                  {article.title}
-                </h1>
-                
-                <div className="flex flex-wrap items-center gap-6 text-gray-600 dark:text-gray-300">
-                  <div className="flex items-center">
-                    <User className="h-5 w-5 mr-2" />
-                    <span className="font-medium">{article.author_name}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-5 w-5 mr-2" />
-                    <span>Published {formatDate(article.created_at)}</span>
-                  </div>
-                  {article.updated_at !== article.created_at && (
-                    <div className="flex items-center">
-                      <Edit className="h-5 w-5 mr-2" />
-                      <span>Updated {formatDate(article.updated_at)}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+        {/* Article Content */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 mb-8">
+          <div 
+            className="prose prose-lg dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: article.content }}
+            style={{
+              lineHeight: '1.7',
+              fontSize: '16px'
+            }}
+          />
+        </div>
 
-              {/* Author Actions */}
-              {isAuthor && (
-                <div className="flex items-center space-x-2 ml-6">
-                  <Link
-                    to="/published-articles"
-                    className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                    title="Edit Article"
-                  >
-                    <Edit className="h-5 w-5" />
-                  </Link>
-                  <button
-                    onClick={handleDelete}
-                    className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                    title="Delete Article"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </button>
-                </div>
+        {/* Author Info */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            About the Author
+          </h3>
+          <div className="flex items-start space-x-4">
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+              <User className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-lg font-medium text-gray-900 dark:text-white">
+                {article.author.username}
+              </h4>
+              {article.author.institution && (
+                <p className="text-gray-600 dark:text-gray-400 mb-2">
+                  {article.author.institution}
+                </p>
+              )}
+              {article.author.bio && (
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {article.author.bio}
+                </p>
               )}
             </div>
-
-            {/* Article Stats */}
-            <div className="flex items-center space-x-6 text-sm text-gray-500 dark:text-gray-400">
-              <span>{article.content.split(' ').length} words</span>
-              <span>~{Math.ceil(article.content.split(' ').length / 200)} min read</span>
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="p-8">
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              <div className="text-gray-900 dark:text-gray-100 leading-relaxed whitespace-pre-wrap">
-                {article.content}
-              </div>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="p-8 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600 dark:text-gray-300">
-                Published by <span className="font-medium">{article.author_name}</span> on {formatDate(article.created_at)}
-              </div>
-              <div className="flex items-center space-x-4">
-                <Link
-                  to="/research-articles"
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium transition-colors"
-                >
-                  Browse More Articles
-                </Link>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        {/* Related Actions */}
-        <div className="mt-8 text-center">
-          <div className="inline-flex items-center space-x-4">
-            <Link
-              to="/research-articles"
-              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-            >
-              <BookOpen className="h-4 w-4 mr-2" />
-              Explore More Research
-            </Link>
-            {user && !isAuthor && (
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-              >
-                Share Your Research
-              </Link>
-            )}
           </div>
         </div>
       </div>
+
+      {/* Custom Styles for Article Content */}
+      <style jsx global>{`
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+          color: inherit;
+          margin-top: 2em;
+          margin-bottom: 1em;
+        }
+        
+        .prose h1 { font-size: 2em; }
+        .prose h2 { font-size: 1.5em; }
+        .prose h3 { font-size: 1.25em; }
+        
+        .prose p {
+          margin-bottom: 1.5em;
+          line-height: 1.7;
+        }
+        
+        .prose ul, .prose ol {
+          margin: 1.5em 0;
+          padding-left: 2em;
+        }
+        
+        .prose li {
+          margin-bottom: 0.5em;
+        }
+        
+        .prose blockquote {
+          border-left: 4px solid #3b82f6;
+          padding-left: 1em;
+          margin: 1.5em 0;
+          font-style: italic;
+          background: rgba(59, 130, 246, 0.05);
+          padding: 1em;
+          border-radius: 0.5em;
+        }
+        
+        .prose code {
+          background: rgba(0, 0, 0, 0.1);
+          padding: 0.2em 0.4em;
+          border-radius: 0.25em;
+          font-size: 0.9em;
+        }
+        
+        .prose pre {
+          background: rgba(0, 0, 0, 0.05);
+          padding: 1em;
+          border-radius: 0.5em;
+          overflow-x: auto;
+          margin: 1.5em 0;
+        }
+        
+        .dark .prose code {
+          background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark .prose pre {
+          background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dark .prose blockquote {
+          background: rgba(59, 130, 246, 0.1);
+        }
+      `}</style>
     </div>
   );
 };

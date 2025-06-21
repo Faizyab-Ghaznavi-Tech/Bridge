@@ -1,112 +1,164 @@
-# BRIDGEB - Research Platform
+# BRIDGEB - Educational Research Platform
 
-**Bringing Research In Direct Grasp of Educators**
+**"Bringing Research In Direct Grasp of Educators"**
 
-A comprehensive full-stack web application that empowers educators worldwide to publish, discover, and collaborate on educational research.
+BRIDGEB is a comprehensive full-stack web application designed to connect educational researchers and practitioners through collaborative research sharing, peer review, and knowledge discovery.
 
 ## 🌟 Features
 
-### 🔐 User Authentication
-- Secure user registration and login with JWT
-- Password hashing with bcrypt
-- Protected routes and middleware
-- User profile management
+### 🔐 Authentication & User Management
+- Email/password registration and login
+- JWT-based authentication with secure password hashing (bcrypt)
+- Role-based access control (user/admin)
+- User profile management with institution and bio information
 
-### 📝 Article Management
-- Publish research articles with rich content
-- Edit and delete your own articles
-- Browse all published research articles
-- Search and filter functionality
-- Responsive article viewer
+### 📝 Rich Article Creation
+- Advanced rich text editor with formatting options
+- Support for headings, lists, links, images, and multimedia
+- Article categorization and keyword tagging
+- Abstract and full content submission
+
+### 🔍 Article Discovery
+- Public research articles page with search functionality
+- Category-based filtering and pagination
+- Detailed article view with author information
+- View tracking and engagement metrics
+
+### ⚡ Approval Workflow
+- Article submission with pending status
+- Admin dashboard for content moderation
+- Approve/reject functionality with feedback
+- Email notifications for status updates
+
+### 👑 Admin Features
+- Comprehensive admin dashboard with statistics
+- User and article management
+- Content moderation tools
+- System analytics and reporting
 
 ### 🎨 Modern UI/UX
-- Beautiful, responsive design with Tailwind CSS
-- Dark/Light mode toggle with system preference detection
-- Smooth animations and transitions
-- Mobile-first responsive design
-- Toast notifications for user feedback
+- Responsive design for all device sizes
+- Dark/light mode with system preference detection
+- Smooth animations and micro-interactions
+- Professional color system and typography
 
-### 🔍 Advanced Features
-- Real-time search across articles
-- Sort articles by date or title
-- User dashboard with profile management
-- Article statistics and reading time estimation
-- SEO-friendly URLs and meta tags
-
-## 🚀 Tech Stack
+## 🛠️ Technology Stack
 
 ### Frontend
 - **React 18** with TypeScript
 - **Tailwind CSS** for styling
 - **React Router** for navigation
+- **React Quill** for rich text editing
 - **React Hot Toast** for notifications
 - **Lucide React** for icons
-- **Context API** for state management
 
 ### Backend
 - **Node.js** with Express
-- **SQLite** database with SQL queries
+- **MongoDB** with Mongoose ODM
 - **JWT** for authentication
 - **bcrypt** for password hashing
 - **CORS** enabled for cross-origin requests
 
-## 📦 Installation & Setup
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- npm or yarn
+- MongoDB (local or MongoDB Atlas)
+- npm or yarn package manager
 
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd bridgeb-research-platform
-```
+### Installation
 
-### 2. Install Dependencies
-```bash
-npm install
-```
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd bridgeb-platform
+   ```
 
-### 3. Environment Setup
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### 4. Start the Application
-```bash
-# Start both frontend and backend concurrently
-npm run dev
+3. **Environment Setup**
+   Create a `.env` file in the root directory:
+   ```env
+   # MongoDB Connection
+   MONGODB_URI=mongodb://localhost:27017/bridgeb
+   
+   # JWT Secret (use a strong, random string)
+   JWT_SECRET=your-super-secret-jwt-key-here
+   
+   # Server Port
+   PORT=3001
+   
+   # Node Environment
+   NODE_ENV=development
+   ```
 
-# Or start them separately:
-# Backend (Terminal 1)
-npm run server
+4. **Start the Application**
+   ```bash
+   # Start both frontend and backend concurrently
+   npm run dev
+   
+   # Or start them separately:
+   # Backend only
+   npm run server
+   
+   # Frontend only (in another terminal)
+   npm run client
+   ```
 
-# Frontend (Terminal 2)
-npm run client
-```
+5. **Access the Application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3001/api
 
-### 5. Access the Application
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:5000
+## 👤 Default Admin Account
+
+The system automatically creates an admin account on first startup:
+
+- **Email:** admin@bridgeb.com
+- **Password:** @dmin-0211
+- **Role:** admin
 
 ## 📁 Project Structure
 
 ```
-bridgeb-research-platform/
+bridgeb-platform/
 ├── src/                          # Frontend React application
 │   ├── components/               # Reusable UI components
-│   ├── contexts/                 # React Context providers
+│   │   ├── Navbar.tsx
+│   │   ├── RichTextEditor.tsx
+│   │   └── ArticleCard.tsx
+│   ├── contexts/                 # React contexts
+│   │   ├── AuthContext.tsx
+│   │   └── ThemeContext.tsx
 │   ├── pages/                    # Page components
-│   ├── utils/                    # Utility functions and API calls
-│   └── App.tsx                   # Main App component
-├── server/                       # Backend Express application
-│   ├── database/                 # Database setup and connection
-│   ├── middleware/               # Express middleware
-│   ├── routes/                   # API route handlers
+│   │   ├── Home.tsx
+│   │   ├── About.tsx
+│   │   ├── Login.tsx
+│   │   ├── Register.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Articles.tsx
+│   │   ├── ArticleDetail.tsx
+│   │   ├── AdminDashboard.tsx
+│   │   └── NotFound.tsx
+│   └── App.tsx                   # Main application component
+├── server/                       # Backend Node.js application
+│   ├── models/                   # MongoDB models
+│   │   ├── User.js
+│   │   └── Article.js
+│   ├── routes/                   # API routes
+│   │   ├── auth.js
+│   │   ├── articles.js
+│   │   └── users.js
+│   ├── middleware/               # Custom middleware
+│   │   └── auth.js
+│   ├── utils/                    # Utility functions
+│   │   └── createAdmin.js
 │   └── index.js                  # Server entry point
-├── public/                       # Static assets
-└── package.json                  # Dependencies and scripts
+├── package.json                  # Dependencies and scripts
+├── .env.example                  # Environment variables template
+└── README.md                     # Project documentation
 ```
 
 ## 🔧 API Endpoints
@@ -114,97 +166,105 @@ bridgeb-research-platform/
 ### Authentication
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
-
-### User Management
-- `GET /api/users/profile` - Get user profile
-- `PUT /api/users/profile` - Update user profile
+- `GET /api/auth/me` - Get current user
+- `PUT /api/auth/profile` - Update user profile
 
 ### Articles
-- `GET /api/articles` - Get all articles (public)
-- `GET /api/articles/mine` - Get user's articles (protected)
+- `GET /api/articles` - Get all approved articles (public)
 - `GET /api/articles/:id` - Get single article
-- `POST /api/articles` - Create new article (protected)
-- `PUT /api/articles/:id` - Update article (protected)
-- `DELETE /api/articles/:id` - Delete article (protected)
+- `POST /api/articles` - Submit new article (authenticated)
+- `GET /api/articles/user/mine` - Get user's articles
+- `GET /api/articles/admin/pending` - Get pending articles (admin)
+- `PUT /api/articles/:id/approve` - Approve article (admin)
+- `PUT /api/articles/:id/reject` - Reject article (admin)
+- `DELETE /api/articles/:id` - Delete article
+
+### Users
+- `GET /api/users/dashboard/stats` - Get dashboard statistics
+- `GET /api/users` - Get all users (admin)
 
 ## 🎯 Key Features Explained
 
-### Authentication System
-- JWT-based authentication with 7-day expiration
-- Secure password hashing using bcrypt
-- Protected routes that redirect to login
-- Automatic token refresh and validation
+### Rich Text Editor
+- Powered by React Quill with custom toolbar
+- Supports formatting, lists, links, and media
+- Dark mode compatible styling
+- Auto-save functionality
 
-### Article Management
-- Rich text content support
-- Author attribution and timestamps
-- Edit/delete permissions for article owners
-- Public browsing for all users
+### Article Approval Workflow
+1. User submits article (status: "pending")
+2. Admin reviews in admin dashboard
+3. Admin approves (status: "approved") or rejects with reason
+4. Approved articles appear in public listings
 
-### Search & Discovery
-- Real-time search across titles, content, and authors
-- Sort by publication date or alphabetical order
-- Responsive grid layout for article cards
-- Reading time estimation
+### Role-Based Access Control
+- **Users:** Can create, edit, and delete their own articles
+- **Admins:** Can manage all articles and users, access admin dashboard
 
-### User Experience
-- Smooth page transitions and loading states
-- Toast notifications for all user actions
-- Dark/light mode with system preference detection
-- Mobile-responsive design for all screen sizes
+### Responsive Design
+- Mobile-first approach with Tailwind CSS
+- Breakpoints: mobile (<768px), tablet (768-1024px), desktop (>1024px)
+- Touch-friendly interface elements
 
 ## 🔒 Security Features
 
-- Password hashing with bcrypt (12 rounds)
-- JWT token validation on protected routes
-- CORS configuration for secure cross-origin requests
+- Password hashing with bcrypt (12 salt rounds)
+- JWT tokens with expiration
+- Protected API routes with authentication middleware
 - Input validation and sanitization
-- SQL injection prevention with parameterized queries
+- CORS configuration for secure cross-origin requests
 
 ## 🌙 Dark Mode Support
 
-The application includes a comprehensive dark mode implementation:
 - System preference detection
-- Manual toggle with persistent storage
+- Manual toggle with localStorage persistence
+- Comprehensive dark mode styling across all components
 - Smooth transitions between themes
-- Consistent styling across all components
 
-## 📱 Responsive Design
+## 📱 Mobile Optimization
 
-Mobile-first approach with breakpoints:
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
+- Responsive navigation with hamburger menu
+- Touch-optimized form controls
+- Optimized typography and spacing for mobile
+- Fast loading and smooth scrolling
 
 ## 🚀 Deployment
 
-### Frontend (Netlify/Vercel)
-```bash
-npm run build
-# Deploy the 'dist' folder
-```
+### Frontend (Vercel/Netlify)
+1. Build the project: `npm run build`
+2. Deploy the `dist` folder to your hosting provider
+3. Configure environment variables for production
 
-### Backend (Railway/Heroku)
-```bash
-# Set environment variables
-# Deploy the server folder
-```
+### Backend (Render/Railway/Heroku)
+1. Set up MongoDB Atlas for production database
+2. Configure environment variables
+3. Deploy the server code
+4. Update frontend API endpoints
+
+### Database (MongoDB Atlas)
+1. Create a MongoDB Atlas cluster
+2. Configure network access and database users
+3. Update MONGODB_URI in environment variables
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Commit changes: `git commit -am 'Add new feature'`
+4. Push to branch: `git push origin feature/new-feature`
+5. Submit a pull request
 
-## Acknowledgments
+## 📄 License
 
-- React team for the amazing framework
-- Tailwind CSS for the utility-first CSS framework
-- Lucide for the beautiful icon set
-- All the educators and researchers who inspire this platform
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Contact the development team
+- Check the documentation for common solutions
 
 ---
 
-**BRIDGEB** - Empowering educators through accessible research sharing.
+**BRIDGEB** - Empowering educators through collaborative research sharing.

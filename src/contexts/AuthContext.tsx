@@ -1,35 +1,41 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { authAPI } from '../utils/api';
 
 interface User {
-  id: number;
-  name: string;
+  id: string;
+  username: string;
   email: string;
-  bio?: string;
+  role: 'user' | 'admin';
   institution?: string;
+  bio?: string;
 }
 
 interface AuthState {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  isAuthenticated: boolean;
 }
-
-interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
-  updateProfile: (userData: Partial<User>) => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthAction = 
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'LOGIN_SUCCESS'; payload: { user: User; token: string } }
   | { type: 'LOGOUT' }
   | { type: 'UPDATE_USER'; payload: User };
+
+const AuthContext = createContext<{
+  state: AuthState;
+  dispatch: React.Dispatch<AuthAction>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
+  logout: () => void;
+  updateProfile: (data: Partial<User>) => Promise<void>;
+} | null>(null);
+
+interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+  institution?: string;
+}
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
@@ -40,21 +46,12 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
-        isAuthenticated: true,
         isLoading: false
       };
     case 'LOGOUT':
-      return {
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        isLoading: false
-      };
+      return { user: null, token: null, isLoading: false };
     case 'UPDATE_USER':
-      return {
-        ...state,
-        user: action.payload
-      };
+      return { ...state, user: action.payload };
     default:
       return state;
   }
@@ -63,56 +60,91 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
-    token: localStorage.getItem('bridgeb_token'),
-    isLoading: true,
-    isAuthenticated: false
+    token: localStorage.getItem('token'),
+    isLoading: true
   });
 
+  const API_BASE = 'http://localhost:3001/api';
+
   useEffect(() => {
-    const token = localStorage.getItem('bridgeb_token');
-    if (token) {
-      // Verify token and get user data
-      authAPI.getProfile()
-        .then(response => {
-          dispatch({
-            type: 'LOGIN_SUCCESS',
-            payload: { user: response.data.user, token }
+    const initAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch(`${API_BASE}/auth/me`, {
+            headers: { Authorization: `Bearer ${token}` }
           });
-        })
-        .catch(() => {
-          localStorage.removeItem('bridgeb_token');
+          
+          if (response.ok) {
+            const data = await response.json();
+            dispatch({ 
+              type: 'LOGIN_SUCCESS', 
+              payload: { user: data.user, token } 
+            });
+          } else {
+            localStorage.removeItem('token');
+            dispatch({ type: 'LOGOUT' });
+          }
+        } catch (error) {
+          localStorage.removeItem('token');
           dispatch({ type: 'LOGOUT' });
-        })
-        .finally(() => {
-          dispatch({ type: 'SET_LOADING', payload: false });
-        });
-    } else {
-      dispatch({ type: 'SET_LOADING', payload: false });
-    }
+        }
+      } else {
+        dispatch({ type: 'SET_LOADING', payload: false });
+      }
+    };
+
+    initAuth();
   }, []);
 
   const login = async (email: string, password: string) => {
     dispatch({ type: 'SET_LOADING', payload: true });
+    
     try {
-      const response = await authAPI.login(email, password);
-      const { user, token } = response.data;
-      
-      localStorage.setItem('bridgeb_token', token);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token } });
+      const response = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      localStorage.setItem('token', data.token);
+      dispatch({ 
+        type: 'LOGIN_SUCCESS', 
+        payload: { user: data.user, token: data.token } 
+      });
     } catch (error) {
       dispatch({ type: 'SET_LOADING', payload: false });
       throw error;
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (data: RegisterData) => {
     dispatch({ type: 'SET_LOADING', payload: true });
+    
     try {
-      const response = await authAPI.register(name, email, password);
-      const { user, token } = response.data;
-      
-      localStorage.setItem('bridgeb_token', token);
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { user, token } });
+      const response = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Registration failed');
+      }
+
+      localStorage.setItem('token', result.token);
+      dispatch({ 
+        type: 'LOGIN_SUCCESS', 
+        payload: { user: result.user, token: result.token } 
+      });
     } catch (error) {
       dispatch({ type: 'SET_LOADING', payload: false });
       throw error;
@@ -120,19 +152,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem('bridgeb_token');
+    localStorage.removeItem('token');
     dispatch({ type: 'LOGOUT' });
   };
 
-  const updateProfile = async (userData: Partial<User>) => {
+  const updateProfile = async (data: Partial<User>) => {
     try {
-      await authAPI.updateProfile(userData);
-      if (state.user) {
-        dispatch({ 
-          type: 'UPDATE_USER', 
-          payload: { ...state.user, ...userData } 
-        });
+      const response = await fetch(`${API_BASE}/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.token}`
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Profile update failed');
       }
+
+      dispatch({ type: 'UPDATE_USER', payload: result.user });
     } catch (error) {
       throw error;
     }
@@ -140,7 +181,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <AuthContext.Provider value={{
-      ...state,
+      state,
+      dispatch,
       login,
       register,
       logout,
@@ -153,7 +195,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (undefined === context) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

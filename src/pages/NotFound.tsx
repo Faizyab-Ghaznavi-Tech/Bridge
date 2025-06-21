@@ -1,52 +1,64 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Search, BookOpen } from 'lucide-react';
+import { Home, ArrowLeft, BookOpen } from 'lucide-react';
 
-const NotFound = () => {
+const NotFound: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
-      <div className="text-center max-w-md mx-auto">
-        {/* 404 Illustration */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 transition-colors duration-200">
+      <div className="text-center max-w-md">
         <div className="mb-8">
-          <div className="relative">
-            <div className="text-9xl font-bold text-gray-200 dark:text-gray-700 select-none">
-              404
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <BookOpen className="h-16 w-16 text-blue-600 dark:text-blue-400" />
-            </div>
-          </div>
+          <BookOpen className="w-24 h-24 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+          <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
+          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
+            Page Not Found
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+            The page you're looking for doesn't exist or has been moved. 
+            Let's get you back to exploring educational research!
+          </p>
         </div>
 
-        {/* Content */}
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          Page Not Found
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-          Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
-        </p>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="space-y-4">
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200"
+            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 w-full justify-center"
           >
-            <Home className="h-4 w-4 mr-2" />
-            Go Home
+            <Home className="w-5 h-5 mr-2" />
+            Go to Homepage
           </Link>
+          
           <Link
-            to="/research-articles"
-            className="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg font-medium transition-colors duration-200"
+            to="/articles"
+            className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200 w-full justify-center"
           >
-            <Search className="h-4 w-4 mr-2" />
+            <BookOpen className="w-5 h-5 mr-2" />
             Browse Articles
           </Link>
+          
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center px-6 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors duration-200 w-full justify-center"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Go Back
+          </button>
         </div>
 
-        {/* Help Text */}
-        <div className="mt-12 text-sm text-gray-500 dark:text-gray-400">
-          <p>If you believe this is an error, please contact our support team.</p>
+        <div className="mt-12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Quick Links
+          </h3>
+          <div className="space-y-2 text-sm">
+            <Link to="/about" className="block text-blue-600 dark:text-blue-400 hover:underline">
+              About BRIDGEB
+            </Link>
+            <Link to="/login" className="block text-blue-600 dark:text-blue-400 hover:underline">
+              Sign In
+            </Link>
+            <Link to="/register" className="block text-blue-600 dark:text-blue-400 hover:underline">
+              Create Account
+            </Link>
+          </div>
         </div>
       </div>
     </div>

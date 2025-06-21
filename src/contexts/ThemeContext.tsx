@@ -1,34 +1,39 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+type Theme = 'light' | 'dark';
+
 interface ThemeContextType {
-  isDark: boolean;
+  theme: Theme;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('bridgeb_theme');
-    return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [theme, setTheme] = useState<Theme>(() => {
+    // Check localStorage first, then system preference
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) return savedTheme;
+    
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
+    localStorage.setItem('theme', theme);
+    
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
     } else {
-      root.classList.remove('dark');
+      document.documentElement.classList.remove('dark');
     }
-    localStorage.setItem('bridgeb_theme', isDark ? 'dark' : 'light');
-  }, [isDark]);
+  }, [theme]);
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
