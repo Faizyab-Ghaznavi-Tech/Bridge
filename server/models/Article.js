@@ -20,11 +20,7 @@ const articleSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
@@ -72,4 +68,11 @@ articleSchema.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model('Article', articleSchema);
+const Article = mongoose.model('Article', articleSchema);
+
+// Delete articles by author
+export const deleteArticlesByAuthor = async (userId) => {
+  await Article.deleteMany({ author: userId });
+};
+
+export default Article;

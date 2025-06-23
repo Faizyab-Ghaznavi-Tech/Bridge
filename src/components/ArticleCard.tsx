@@ -75,7 +75,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, showStatus = false }
         <div className="flex items-center space-x-4">
           <div className="flex items-center">
             <User className="w-4 h-4 mr-1" />
-            <span>{article.author.username}</span>
+            <span>{article.author?.username || 'Unknown Author'}</span>
           </div>
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-1" />

@@ -59,4 +59,26 @@ router.get('/', authenticateToken, requireAdmin, async (req, res) => {
   }
 });
 
+// Delete a user (admin only)
+router.delete('/:userId', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Delete all articles by this user
+    await Article.deleteMany({ author: null });
+
+    // Delete the user
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'User and their articles deleted' });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ message: 'Failed to delete user' });
+  }
+});
+
 export default router;

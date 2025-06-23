@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BookOpen, Github, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -10,12 +10,13 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="p-2 bg-blue-600 dark:bg-blue-500 rounded-lg">
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
+              {/* Use the same logo as in navbar */}
+              <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">BRIDGEB</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Bringing Research In Direct Grasp of Educators</p>
+                <span className="text-xl font-bold text-gray-900 dark:text-white">BRIDGEB</span>
+                <p className="text-xs text-gray-600 dark:text-gray-300 -mt-1">
+                  Bringing Research In Direct Grasp of Educators
+                </p>
               </div>
             </div>
             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed max-w-md">

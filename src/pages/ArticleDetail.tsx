@@ -211,7 +211,7 @@ const ArticleDetail: React.FC = () => {
       </div>
 
       {/* Custom Styles for Article Content */}
-      <style jsx global>{`
+      <style >{`
         .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
           color: inherit;
           margin-top: 2em;
