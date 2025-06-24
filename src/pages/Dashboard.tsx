@@ -19,7 +19,10 @@ interface Article {
     username: string;
     institution?: string;
   };
+  readTime: number; // <-- Add this
+  views: number;    // <-- And this
 }
+
 
 interface Stats {
   userArticles: number;
@@ -42,6 +45,9 @@ const Dashboard: React.FC = () => {
     category: 'Education Technology',
     keywords: ''
   });
+
+  const [articleFilter, setArticleFilter] = useState<'all' | 'pending' | 'approved'>('all');
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   const categories = [
     'Education Technology',
@@ -215,7 +221,14 @@ const Dashboard: React.FC = () => {
           <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <button
+                onClick={() => {
+                  setActiveTab('articles');
+                  setArticleFilter('all');
+                }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-left w-full focus:outline-none hover:ring-2 ring-blue-400 transition"
+                type="button"
+              >
                 <div className="flex items-center">
                   <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
                     <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -225,9 +238,15 @@ const Dashboard: React.FC = () => {
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.userArticles}</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('articles');
+                  setArticleFilter('pending');
+                }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-left w-full focus:outline-none hover:ring-2 ring-yellow-400 transition"
+                type="button"
+              >
                 <div className="flex items-center">
                   <div className="p-2 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
                     <Clock className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
@@ -237,9 +256,15 @@ const Dashboard: React.FC = () => {
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingArticles}</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('articles');
+                  setArticleFilter('approved');
+                }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-left w-full focus:outline-none hover:ring-2 ring-green-400 transition"
+                type="button"
+              >
                 <div className="flex items-center">
                   <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
                     <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
@@ -249,7 +274,7 @@ const Dashboard: React.FC = () => {
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.approvedArticles}</p>
                   </div>
                 </div>
-              </div>
+              </button>
             </div>
 
             {/* Recent Articles */}
@@ -424,7 +449,11 @@ const Dashboard: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                My Articles
+                {articleFilter === 'pending'
+                  ? 'Pending Review'
+                  : articleFilter === 'approved'
+                  ? 'Published Articles'
+                  : 'My Articles'}
               </h2>
               <button
                 onClick={() => setActiveTab('write')}
@@ -441,7 +470,12 @@ const Dashboard: React.FC = () => {
               </div>
             ) : articles.length > 0 ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {articles.map(article => (
+                {articles
+                  .filter(article => {
+                    if (articleFilter === 'all') return true;
+                    return article.status === articleFilter;
+                  })
+                  .map(article => (
                   <div key={article._id} className="relative">
                     <ArticleCard article={article} showStatus={true} />
                     <div className="absolute top-4 right-4">
@@ -451,6 +485,15 @@ const Dashboard: React.FC = () => {
                         title="Delete article"
                       >
                         <XCircle className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <div className="absolute top-4 right-16">
+                      <button
+                        onClick={() => setSelectedArticle(article)}
+                        className="p-2 bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                        title="Preview article"
+                      >
+                        <FileText className="w-4 h-4" />
                       </button>
                     </div>
                     {article.status === 'rejected' && article.rejectionReason && (
@@ -481,6 +524,64 @@ const Dashboard: React.FC = () => {
                 </button>
               </div>
             )}
+          </div>
+        )}
+
+        {selectedArticle && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-start">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    {selectedArticle.title}
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {selectedArticle.author?.username} • {new Date(selectedArticle.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <XCircle className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Abstract</h3>
+                  <p className="text-gray-700 dark:text-gray-300">{selectedArticle.abstract}</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Content</h3>
+                  <div
+                    className="prose dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: selectedArticle.content }}
+                  />
+                </div>
+                {selectedArticle.keywords.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Keywords</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedArticle.keywords.map((keyword, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-md"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedArticle.status === 'rejected' && selectedArticle.rejectionReason && (
+                  <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                    <p className="text-sm text-red-800 dark:text-red-200">
+                      <strong>Rejection Reason:</strong> {selectedArticle.rejectionReason}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

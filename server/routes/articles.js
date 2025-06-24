@@ -73,6 +73,7 @@ router.get('/:id', async (req, res) => {
 router.get('/user/mine', authenticateToken, async (req, res) => {
   try {
     const articles = await Article.find({ author: req.user._id })
+      .populate('author', 'username institution')
       .sort({ createdAt: -1 });
 
     res.json(articles);

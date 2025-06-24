@@ -123,7 +123,7 @@ const Navbar: React.FC = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-teal-400 to-blue-500 text-white rounded-md shadow-lg hover:from-teal-500 hover:to-blue-700 transition-all duration-300"
                 >
                   Register
                 </Link>
@@ -219,7 +219,7 @@ const Navbar: React.FC = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="block px-3 py-2 rounded-md text-base font-medium bg-blue-600 text-white"
+                    className="block px-3 py-2 rounded-md text-base font-medium bg-gradient-to-r from-teal-400 to-blue-500 text-white shadow-lg hover:from-teal-500 hover:to-blue-700 transition-all duration-300"
                     onClick={() => setIsOpen(false)}
                   >
                     Register

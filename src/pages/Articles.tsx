@@ -127,9 +127,9 @@ const Articles: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center"
+              className="inline-flex items-center px-6 py-2 rounded-md font-semibold bg-gradient-to-r from-blue-600 to-teal-500 text-white shadow-lg hover:scale-105 hover:from-blue-700 hover:to-teal-600 transition-all duration-300 group text-base"
             >
-              <Search className="w-4 h-4 mr-2" />
+              <Search className="w-4 h-4 mr-2 group-hover:scale-125 transition-transform duration-300" />
               Search
             </button>
           </form>

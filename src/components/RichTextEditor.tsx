@@ -51,11 +51,11 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         placeholder={placeholder}
         style={{
           height: '400px',
-          marginBottom: '50px'
+          marginBottom: '80px'
         }}
         className="dark:text-white"
       />
-      <style jsx global>{`
+      <style>{`
         .ql-toolbar {
           border-top: 1px solid #e5e7eb !important;
           border-left: 1px solid #e5e7eb !important;

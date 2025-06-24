@@ -52,7 +52,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, showStatus = false }
           {article.category}
         </span>
         {showStatus && article.status && (
-          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(article.status)}`}>
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mr-10 ${getStatusColor(article.status)}`}>
             {article.status.charAt(0).toUpperCase() + article.status.slice(1)}
           </span>
         )}
