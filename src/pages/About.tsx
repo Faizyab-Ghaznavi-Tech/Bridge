@@ -27,13 +27,13 @@ const About: React.FC = () => {
             </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-teal-500 to-indigo-600 dark:from-blue-300 dark:via-teal-300 dark:to-indigo-400 mb-4 animate-fade-in-up">
-            About BRIDGEB
+            About BRIDGE
           </h1>
           <span className="block text-2xl md:text-3xl font-medium text-blue-600 dark:text-blue-400 mt-2 mb-6 animate-fade-in-up delay-100">
             Empowering Teachers. Elevating Research.
           </span>
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-200">
-            BRIDGEB (Bringing Research In Direct Grasp of Educators) is a semi-annual, open-access online journal dedicated to bridging the gap between educational research and classroom practice. The journal presents summarized academic research and reflective narratives in a clear, accessible format designed for Pre-K through 12th-grade educators.
+            BRIDGE (Bringing Research In Direct Grasp of Educators) is a semi-annual, open-access online journal dedicated to bridging the gap between educational research and classroom practice. The journal presents summarized academic research and reflective narratives in a clear, accessible format designed for Pre-K through 12th-grade educators.
           </p>
         </div>
       </section>
@@ -47,7 +47,7 @@ const About: React.FC = () => {
                 Our Mission
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                Founded by Dr. Denise McDonald and supported by the University of Houston–Clear Lake and Texas A&M University, BRIDGEB has two core missions:
+                Founded by Dr. Denise McDonald and supported by the University of Houston–Clear Lake and Texas A&M University, BRIDGE has two core missions:
               </p>
               <ul className="text-lg text-gray-700 dark:text-gray-200 mb-6 list-disc list-inside space-y-2">
                 <li>
@@ -58,7 +58,7 @@ const About: React.FC = () => {
                 </li>
               </ul>
               <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                Whether you're seeking to enhance your classroom strategies or take your first step into academic publishing, BRIDGEB is here to support your journey.
+                Whether you're seeking to enhance your classroom strategies or take your first step into academic publishing, BRIDGE is here to support your journey.
               </p>
             </div>
             <div className="bg-gradient-to-br from-blue-100 via-white to-teal-100 dark:from-blue-900 dark:via-gray-800 dark:to-teal-900 rounded-2xl p-10 shadow-xl animate-fade-in-up delay-100">
@@ -113,7 +113,7 @@ const About: React.FC = () => {
               Our Core Values
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-100">
-              These principles guide everything we do at BRIDGEB.
+              These principles guide everything we do at BRIDGE.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -153,7 +153,7 @@ const About: React.FC = () => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in-up">
-              How BRIDGEB Works
+              How BRIDGE Works
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-100">
               A simple, transparent process that connects researchers with educators
@@ -215,7 +215,7 @@ const About: React.FC = () => {
             Global Impact
           </h2>
           <p className="text-xl text-blue-700 dark:text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-up delay-100">
-            BRIDGEB is more than just a platform—it's a movement towards evidence-based education that transcends geographical boundaries and connects educators worldwide.
+            BRIDGE is more than just a platform—it's a movement towards evidence-based education that transcends geographical boundaries and connects educators worldwide.
             <br />
             <span className="block mt-4 text-base text-blue-800 dark:text-blue-200">
               Our ever-growing community is dedicated to sharing practical research, fostering collaboration, and inspiring innovation in classrooms across the globe.
@@ -241,7 +241,7 @@ const About: React.FC = () => {
           <div className="mt-12 animate-fade-in-up delay-300">
             <p className="text-lg text-blue-800 dark:text-blue-100">
               Ready to join a vibrant, supportive network of educators and researchers? <br />
-              <span className="font-semibold">BRIDGEB welcomes you to contribute, collaborate, and grow with us.</span>
+              <span className="font-semibold">BRIDGE welcomes you to contribute, collaborate, and grow with us.</span>
             </p>
           </div>
         </div>

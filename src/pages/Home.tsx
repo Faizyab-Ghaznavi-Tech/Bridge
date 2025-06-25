@@ -81,7 +81,7 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in-up">
-              Why Choose BRIDGEB?
+              Why Choose BRIDGE?
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-100">
               Our platform is designed specifically for educators who want to bridge the gap between research and practice.
@@ -133,14 +133,14 @@ const Home: React.FC = () => {
             Ready to Make an Impact?
           </h2>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 animate-fade-in-up delay-100">
-            Join thousands of educators who are already using BRIDGEB to share their research and improve education worldwide.
+            Join thousands of educators who are already using BRIDGE to share their research and improve education worldwide.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
             <Link
               to="/register"
               className="inline-flex items-center px-8 py-4 rounded-lg font-semibold text-lg bg-gradient-to-r from-blue-600 to-teal-500 text-white shadow-lg hover:scale-105 hover:from-blue-700 hover:to-teal-600 transition-all duration-300 group"
             >
-              Join BRIDGEB Today
+              Join BRIDGE Today
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
             <Link
