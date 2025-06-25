@@ -13,6 +13,7 @@ import Articles from './pages/Articles';
 import ArticleDetail from './pages/ArticleDetail';
 import AdminDashboard from './pages/AdminDashboard';
 import NotFound from './pages/NotFound';
+import EditorialBoard from './pages/Editorial_Board'; // Add this import
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({ 
@@ -73,6 +74,7 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/articles/:id" element={<ArticleDetail />} />
+                <Route path="/editorial-board" element={<EditorialBoard />} /> {/* Add this line */}
                 
                 {/* Auth Routes (redirect if logged in) */}
                 <Route path="/login" element={
@@ -131,7 +133,7 @@ function App() {
             />
             
             {/* CSS Variables for Toast Theming */}
-            <style jsx global>{`
+            <style >{`
               :root {
                 --toast-bg: #ffffff;
                 --toast-color: #374151;

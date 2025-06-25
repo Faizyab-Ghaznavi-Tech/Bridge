@@ -56,6 +56,16 @@ const Navbar: React.FC = () => {
               Research Articles
             </Link>
             <Link
+  to="/editorial-board"
+  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+    isActive('/editorial-board') 
+      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+  }`}
+>
+  Editorial Board
+</Link>
+            <Link
               to="/about"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 isActive('/about') 
@@ -168,6 +178,17 @@ const Navbar: React.FC = () => {
               >
                 Research Articles
               </Link>
+              <Link
+  to="/editorial-board"
+  className={`block px-3 py-2 rounded-md text-base font-medium ${
+    isActive('/editorial-board') 
+      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+      : 'text-gray-700 dark:text-gray-300'
+  }`}
+  onClick={() => setIsOpen(false)}
+>
+  Editorial Board
+</Link>
               <Link
                 to="/about"
                 className={`block px-3 py-2 rounded-md text-base font-medium ${

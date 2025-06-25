@@ -1,4 +1,3 @@
-
 import { BookOpen, Github, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -43,6 +42,11 @@ const Footer = () => {
               <li>
                 <Link to="/articles" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors duration-200">
                   Research Articles
+                </Link>
+              </li>
+              <li>
+                <Link to="/editorial-board" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors duration-200">
+                  Editorial Board
                 </Link>
               </li>
               <li>
