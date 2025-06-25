@@ -45,7 +45,7 @@ const Login: React.FC = () => {
             Welcome Back
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-            Sign in to your BRIDGEB account
+            Sign in to your BRIDGE account
           </p>
         </div>
 
