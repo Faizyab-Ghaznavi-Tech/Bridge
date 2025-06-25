@@ -47,7 +47,7 @@ const Home: React.FC = () => {
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-teal-500 to-indigo-600 dark:from-blue-300 dark:via-teal-300 dark:to-indigo-400 mb-4 animate-fade-in-up">
-              BRIDGEB
+              BRIDGE
             </h1>
             <span className="block text-2xl md:text-3xl font-medium text-blue-600 dark:text-blue-400 mt-2 mb-6 animate-fade-in-up delay-100">
               Bringing Research In Direct Grasp of Educators

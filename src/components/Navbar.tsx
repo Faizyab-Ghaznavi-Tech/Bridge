@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
           <Link to="/" className="flex items-center space-x-2">
             <BookOpen className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             <div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">BRIDGEB</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">BRIDGE</span>
               <p className="text-xs text-gray-600 dark:text-gray-300 -mt-1">
                 Bringing Research In Direct Grasp of Educators
               </p>
