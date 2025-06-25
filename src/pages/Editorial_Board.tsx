@@ -119,7 +119,7 @@ const EditorialBoard: React.FC = () => {
             Editorial Board
           </h1>
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto text-center animate-fade-in-up delay-100">
-            Meet the distinguished editors and reviewers guiding the vision and quality of BRIDGEB.
+            Meet the distinguished editors and reviewers guiding the vision and quality of BRIDGE.
           </p>
 
           {/* Editors Section */}
