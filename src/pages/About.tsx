@@ -281,13 +281,13 @@ const About: React.FC = () => {
 							</span>
 						</p>
 						<div className="flex justify-center mt-8">
-							<a
-								href="/register"
+							<Link
+								to="/register"
 								className="inline-flex items-center px-8 py-4 rounded-lg font-semibold text-lg bg-gradient-to-r from-teal-400 to-blue-500 text-white shadow-lg hover:scale-105 hover:from-teal-500 hover:to-blue-700 transition-all duration-300 group"
 							>
 								Join BRIDGE
 								<ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>
