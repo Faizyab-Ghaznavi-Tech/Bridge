@@ -1,5 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Footer from '../components/Footer';
+
+// Scroll reveal hook
+function useScrollReveal(className = 'reveal-on-scroll', animationClass = 'animate-popup') {
+  useEffect(() => {
+    const elements = document.querySelectorAll(`.${className}`);
+    const onScroll = () => {
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          el.classList.add(animationClass);
+        }
+      });
+    };
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [className, animationClass]);
+}
 
 const editors: {
   title: string;
@@ -110,6 +128,8 @@ const reviewBoard = [
 ];
 
 const EditorialBoard: React.FC = () => {
+  useScrollReveal();
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
       <section className="relative py-16">
@@ -125,7 +145,7 @@ const EditorialBoard: React.FC = () => {
           {/* Editors Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {editors.map((section) => (
-              <div key={section.title} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-fade-in-up">
+              <div key={section.title} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 reveal-on-scroll opacity-0">
                 <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300 mb-4 text-center">{section.title}</h2>
                 <ul className="space-y-4">
                   {section.members.map((member) => (
@@ -143,13 +163,13 @@ const EditorialBoard: React.FC = () => {
           </div>
 
           {/* Editorial Review Board */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 animate-fade-in-up delay-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 reveal-on-scroll opacity-0 delay-200">
             <h2 className="text-2xl font-bold text-teal-700 dark:text-teal-300 mb-6 text-center">
               Editorial Review Board
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {reviewBoard.map((member) => (
-                <div key={member.name} className="flex flex-col bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 rounded-lg p-5 shadow group hover:scale-105 transition-transform duration-300">
+                <div key={member.name} className="flex flex-col bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 rounded-lg p-5 shadow group hover:scale-105 transition-transform duration-300 reveal-on-scroll opacity-0">
                   <span className="text-lg font-semibold text-gray-900 dark:text-white">{member.name}</span>
                   <span className="text-sm text-gray-600 dark:text-gray-300">{member.role}</span>
                   <span className="text-sm text-blue-600 dark:text-blue-400">{member.institution}</span>
@@ -169,6 +189,18 @@ const EditorialBoard: React.FC = () => {
           }
           .animate-fade-in-up {
             animation: fade-in-up 1s cubic-bezier(.4,0,.2,1) both;
+          }
+          @keyframes popup {
+            0% { opacity: 0; transform: scale(0.95) translateY(40px);}
+            100% { opacity: 1; transform: scale(1) translateY(0);}
+          }
+          .animate-popup {
+            opacity: 1 !important;
+            animation: popup 0.7s cubic-bezier(.4,0,.2,1) both;
+          }
+          .reveal-on-scroll {
+            opacity: 0;
+            transition: opacity 0.3s;
           }
           .delay-100 { animation-delay: .1s; }
           .delay-200 { animation-delay: .2s; }
