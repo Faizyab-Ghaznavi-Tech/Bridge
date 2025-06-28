@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, ArrowRight, Search, PenTool, Globe } from 'lucide-react';
 import Footer from '../components/Footer';
@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 const features = [
 	{
 		icon: PenTool,
-		title: 'Publish Research',
+		title: 'Submit Manuscript',
 		description: 'Share your educational research with a global community of educators and researchers.',
 	},
 	{
@@ -52,42 +52,8 @@ function useScrollReveal(className = 'reveal-on-scroll', animationClass = 'anima
 }
 // --- End scroll reveal hook ---
 
-const bridgeCardText = `BRIDGE is a semi-annual practitioner journal dedicated to making educational research accessible and actionable for Pre-K–12th grade teachers.
-We summarize research from all content areas and specializations, ensuring that every teacher can find practical strategies and insights to enhance classroom instruction and management.`;
-
 const Home: React.FC = () => {
-    const [typedText, setTypedText] = useState('');
-    const [isTyping, setIsTyping] = useState(true);
-    const indexRef = useRef(0);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    useScrollReveal(); // <-- Add this to enable scroll popup animation
-
-    useEffect(() => {
-        setTypedText('');
-        setIsTyping(true);
-        indexRef.current = 0;
-
-        function typeWriter() {
-            if (indexRef.current < bridgeCardText.length) {
-                const currentChar = bridgeCardText[indexRef.current];
-                setTypedText((prev) => prev + currentChar);
-                indexRef.current++;
-                timeoutRef.current = setTimeout(
-                    typeWriter,
-                    currentChar === '\n' ? 400 : 12
-                );
-            } else {
-                setIsTyping(false);
-            }
-        }
-
-        typeWriter();
-
-        return () => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        };
-    }, []);
+    useScrollReveal(); // Keep this for scroll popup animation
 
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
@@ -107,16 +73,13 @@ const Home: React.FC = () => {
                         <span className="block text-2xl md:text-3xl font-medium text-blue-600 dark:text-blue-400 mt-2 mb-6 animate-fade-in-up delay-100">
                             Bringing Research In Direct Grasp of Educators
                         </span>
-                        <div className="mb-10 max-w-3xl mx-auto animate-fade-in-up delay-200">
-                            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl shadow-lg px-6 py-5 min-h-[140px] flex items-center justify-center">
-                                <p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 leading-relaxed text-center whitespace-pre-line">
-                                    {typedText}
-                                    {isTyping && (
-                                        <span
-                                            className="inline-block w-2 h-6 align-middle bg-blue-400 dark:bg-blue-200 animate-pulse ml-1"
-                                            style={{ borderRadius: 2 }}
-                                        />
-                                    )}
+
+                        <div className="mb-10 max-w-3xl mx-auto reveal-on-scroll opacity-0">
+                            <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl shadow-lg px-6 py-7">
+                                <p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 leading-relaxed text-center">
+                                    <span className="font-semibold text-blue-700 dark:text-blue-300">BRIDGE</span> is a semi-annual practitioner journal dedicated to making educational research accessible and actionable for Pre-K–12th grade teachers.
+                                    <br className="hidden md:block" />
+                                    We summarize research from all content areas and specializations, ensuring that every teacher can find practical strategies and insights to enhance classroom instruction and management.
                                 </p>
                             </div>
                         </div>
@@ -198,38 +161,7 @@ const Home: React.FC = () => {
 				</div>
 			</section>
 
-			{/* Stats Section */}
-			<section className="py-16 bg-gradient-to-r from-blue-600 via-teal-500 to-indigo-600 dark:from-blue-800 dark:via-teal-700 dark:to-indigo-800 transition-colors duration-500">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-						<div className="transform hover:scale-110 transition-transform duration-300">
-							<div className="text-5xl font-extrabold text-white mb-2 drop-shadow-lg animate-fade-in-up">
-								1000+
-							</div>
-							<div className="text-blue-100 text-lg font-medium">
-								Educators Connected
-							</div>
-						</div>
-						<div className="transform hover:scale-110 transition-transform duration-300">
-							<div className="text-5xl font-extrabold text-white mb-2 drop-shadow-lg animate-fade-in-up delay-100">
-								500+
-							</div>
-							<div className="text-blue-100 text-lg font-medium">
-								Research Articles
-							</div>
-						</div>
-						<div className="transform hover:scale-110 transition-transform duration-300">
-							<div className="text-5xl font-extrabold text-white mb-2 drop-shadow-lg animate-fade-in-up delay-200">
-								50+
-							</div>
-							<div className="text-blue-100 text-lg font-medium">
-								Countries Represented
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
+		
 			{/* CTA Section */}
 			<section className="py-20 bg-gradient-to-br from-blue-50 via-white to-teal-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
 				<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

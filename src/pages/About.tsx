@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { BookOpen, Users, Target, Heart, Lightbulb, Globe, FileText, PenTool, ArrowRight } from 'lucide-react';
+import {  Users, Target, Heart, Lightbulb, Globe, FileText, PenTool, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 
 const articleTypes = [
@@ -36,6 +37,10 @@ function useScrollReveal(className = 'reveal-on-scroll', animationClass = 'anima
 }
 
 const About: React.FC = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
 	useScrollReveal();
 
 	return (
@@ -94,6 +99,7 @@ const About: React.FC = () => {
 									<span className="font-semibold text-blue-600 dark:text-blue-400">
 										Secondary:
 									</span>{' '}
+
 									Provide graduate students, as emerging authors, an initial publication experience under the guidance of skilled researchers.
 								</li>
 							</ul>
@@ -121,20 +127,34 @@ const About: React.FC = () => {
 						</p>
 					</div>
 					<div className="flex flex-col md:flex-row gap-8 justify-center items-stretch">
-						{articleTypes.map((type, idx) => (
-							<div
-								key={type.title}
-								className={`flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 reveal-on-scroll opacity-0 ${
-									idx === 1 ? 'md:mt-8' : ''
-								}`}
-							>
-								{type.icon}
-								<h3 className="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-2">
-									{type.title}
-								</h3>
-								<p className="text-gray-700 dark:text-gray-300">{type.description}</p>
-							</div>
-						))}
+						{/* Article Summary Card */}
+						<Link
+							to="/articles-types#article-summary"
+							className="flex-1 min-w-[260px] bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 reveal-on-scroll opacity-0 focus:outline-none hover:outline hover:outline-2 hover:outline-blue-600"
+							style={{ textDecoration: 'none' }}
+						>
+							<FileText className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-2" />
+							<h3 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-3">
+								Article Summary
+							</h3>
+							<p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+								Concise, practitioner-focused summaries of current educational research, crafted for immediate classroom application.
+							</p>
+						</Link>
+						{/* Transition Narratives Card */}
+						<Link
+							to="/articles-types#transition-narratives"
+							className="flex-1 min-w-[260px] bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105 reveal-on-scroll opacity-0 focus:outline-none hover:outline hover:outline-2 hover:outline-teal-500"
+							style={{ textDecoration: 'none' }}
+						>
+							<PenTool className="w-8 h-8 text-teal-600 dark:text-teal-400 mb-2" />
+							<h3 className="text-2xl font-bold text-teal-700 dark:text-blue-300 mb-3">
+								Transition Narratives
+							</h3>
+							<p className="text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+								Brief, reflective pieces on the journey from educator to researcher, offering inspiration and guidance for aspiring teacher-scholars.
+							</p>
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -234,55 +254,7 @@ const About: React.FC = () => {
 				</div>
 			</section>
 
-			{/* Global Impact Section */}
-			<section className="py-20">
-				<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-					<h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-10 text-center reveal-on-scroll opacity-0">
-						Global Impact
-					</h2>
-					<p className="text-xl text-blue-700 dark:text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed text-center reveal-on-scroll opacity-0 delay-100">
-						BRIDGE is more than just a platform—it's a movement towards evidence-based education that
-						transcends geographical boundaries and connects educators worldwide.
-						<br />
-						<span className="block mt-4 text-base text-blue-800 dark:text-blue-200">
-							Our ever-growing community is dedicated to sharing practical research, fostering
-							collaboration, and inspiring innovation in classrooms across the globe.
-						</span>
-					</p>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center reveal-on-scroll opacity-0 delay-200">
-							<Globe className="w-10 h-10 text-teal-500 dark:text-teal-400 mb-4" />
-							<span className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-2">
-								50+
-							</span>
-							<span className="text-gray-700 dark:text-gray-300">Countries Reached</span>
-							<span className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-								A truly global educational community
-							</span>
-						</div>
-						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center reveal-on-scroll opacity-0 delay-300">
-							<Users className="w-10 h-10 text-blue-600 dark:text-blue-400 mb-4" />
-							<span className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-2">
-								1000+
-							</span>
-							<span className="text-gray-700 dark:text-gray-300">Educators Connected</span>
-							<span className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-								Collaborating and learning together
-							</span>
-						</div>
-						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center text-center reveal-on-scroll opacity-0 delay-400">
-							<FileText className="w-10 h-10 text-blue-400 dark:text-blue-300 mb-4" />
-							<span className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-2">
-								500+
-							</span>
-							<span className="text-gray-700 dark:text-gray-300">Research Articles</span>
-							<span className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-								Accessible, actionable, and peer-reviewed
-							</span>
-						</div>
-					</div>
-				</div>
-			</section>
+			
 
 			{/* Collaboration Section */}
 			<section className="py-20 bg-gradient-to-br from-white via-blue-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">

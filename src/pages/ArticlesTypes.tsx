@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { FileText, PenTool, Users, BookOpen, Star, GraduationCap, ClipboardList } from 'lucide-react';
 import Footer from '../components/Footer';
 
@@ -24,19 +24,7 @@ const topics = [
   "Technology",
 ];
 
-const reviewBoard = [
-  { area: "Technology", name: "Caroline Crawford" },
-  { area: "Social Studies", name: "Debby Shulsky" },
-  { area: "Library Sciences", name: "Sheila Baker" },
-  { area: "Mathematics", name: "Jackie Sacks" },
-  { area: "Special Education", name: "Bernardo Pohl" },
-  { area: "Science", name: "Omah Williams-Duncan" },
-  { area: "Art Education", name: "Carrie Markello" },
-  { area: "Classroom Management", name: "Kent Divoll" },
-  { area: "Bilingual Education", name: "Lesley Gauna" },
-  { area: "Teacher Mentoring", name: "Jane Cooper" },
-  { area: "Language Arts & Reading", name: "TBD" },
-];
+
 
 // Add this custom hook for scroll-based animation
 function useScrollReveal(className = 'reveal-on-scroll', animationClass = 'animate-popup') {
@@ -57,6 +45,11 @@ function useScrollReveal(className = 'reveal-on-scroll', animationClass = 'anima
 }
 
 const ArticlesTypes: React.FC = () => {
+  // Scroll to top on mount (for direct navigation)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useScrollReveal();
 
   return (
@@ -64,7 +57,8 @@ const ArticlesTypes: React.FC = () => {
       {/* Header */}
       <section className="relative overflow-visible py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-white/10 to-teal-300/20 dark:from-blue-900/40 dark:via-gray-900/10 dark:to-teal-900/30 animate-gradient-move" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center">
+        <div  
+        className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-teal-500 to-indigo-600 dark:from-blue-300 dark:via-teal-300 dark:to-indigo-400 mb-8 pb-2 animate-fade-in-up" style={{ paddingBottom: '0.5rem', marginBottom: '2rem' }} // extra space for descenders
 >            Article Types & Author Guidelines</h1>
           <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-6 max-w-2xl mx-auto animate-fade-in-up delay-100">
@@ -77,7 +71,10 @@ const ArticlesTypes: React.FC = () => {
       <section className="py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           {/* Article Summary */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 border-blue-400 dark:border-blue-600 reveal-on-scroll opacity-0">
+          <div
+            id="article-summary"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 border-blue-400 dark:border-blue-600 reveal-on-scroll opacity-0"
+          >
              <div className="flex items-center justify-center mb-4">
                 <FileText  className="w-12 h-12 text-blue-600 dark:text-teal-400" />
               </div><h2 className="text-3xl font-bold text-blue-700 dark:text-teal-300 mb-4 text-center">Article Summary</h2>
@@ -160,7 +157,10 @@ const ArticlesTypes: React.FC = () => {
           </div>
 
           {/* Transition from Educator to Researcher */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 border-teal-400 dark:border-teal-600 reveal-on-scroll opacity-0">
+          <div
+            id="transition-narratives"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 border-teal-400 dark:border-teal-600 reveal-on-scroll opacity-0"
+          >
               <div className="flex items-center justify-center mb-4">
                 <GraduationCap className="w-12 h-12 text-teal-600 dark:text-teal-400" />
               </div><h2 className="text-3xl font-bold text-teal-700 dark:text-teal-300 mb-4 text-center">Transition from Educator to Researcher</h2>
@@ -212,46 +212,7 @@ const ArticlesTypes: React.FC = () => {
           </div>
         </div>
       </section>
-    {/* Editorial Board Section */}
-
-    {/* Editorial Board */}
-    <section className="py-10">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-blue-100 via-white to-teal-100 dark:from-blue-900 dark:via-gray-800 dark:to-teal-900 rounded-2xl shadow-xl p-8 reveal-on-scroll opacity-0">
-          <div className="flex items-center gap-3 mb-4">
-            <ClipboardList className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-            <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300">Editorial Team</h2>
-          </div>
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Editors</h3>
-                <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
-                  <li>Dr. Denise McDonald (Founder), Professor Emeritus, University of Houston – Clear Lake</li>
-                  <li>Dr. Cheryl Craig, Professor, Texas A&amp;M University</li>
-                </ul>
-                <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Associate Editor</h3>
-                <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
-                  <li>Gayle Curtis (Independent Consultant)</li>
-                </ul>
-                <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Assistant Editor</h3>
-                <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
-                  <li>Dr. Andrea Foster, Sam Houston State University</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Editorial Review Board (By Area of Expertise)</h3>
-                <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
-                  {reviewBoard.map(({ area, name }) => (
-                    <li key={area}><b>{area}:</b> {name}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </>
-        </div>
-      </div>
-    </section>
+  
 
       <Footer />
 

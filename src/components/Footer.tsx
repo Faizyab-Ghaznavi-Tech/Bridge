@@ -50,6 +50,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/articles-types" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors duration-200">
+                  Guidelines
+                </Link>
+              </li>
+              <li>
                 <Link to="/register" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors duration-200">
                   Join Now
                 </Link>
@@ -88,7 +93,7 @@ const Footer = () => {
         <div className="border-t dark:border-gray-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-600 dark:text-gray-300 text-sm">
-              © 2024 BRIDGE. All rights reserved.
+              © 2025 BRIDGE. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 text-sm transition-colors duration-200">
