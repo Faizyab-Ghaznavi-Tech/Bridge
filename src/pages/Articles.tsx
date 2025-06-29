@@ -39,7 +39,7 @@ const Articles: React.FC = () => {
     'Other'
   ];
 
-  const API_BASE = 'bridge-server.railway.internal/api';
+  const API_BASE = 'https://bridge-server-production-208e.up.railway.app/api';
 
   useEffect(() => {
     fetchArticles();
