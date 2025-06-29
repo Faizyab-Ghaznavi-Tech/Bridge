@@ -15,6 +15,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import NotFound from './pages/NotFound';
 import EditorialBoard from './pages/Editorial_Board'; // Add this import
 import ArticlesTypes from './pages/ArticlesTypes'; // Add this import
+import CheckList from './pages/CheckList'; // Add this import
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({ 
@@ -76,7 +77,8 @@ function App() {
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/articles/:id" element={<ArticleDetail />} />
                 <Route path="/editorial-board" element={<EditorialBoard />} />
-                <Route path="/articles-types" element={<ArticlesTypes />} /> {/* Add this line */}
+                <Route path="/articles-types" element={<ArticlesTypes />} />
+                <Route path="/checklist" element={<CheckList />} /> {/* Add this line */}
                 
                 {/* Auth Routes (redirect if logged in) */}
                 <Route path="/login" element={

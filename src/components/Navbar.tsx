@@ -85,6 +85,16 @@ const Navbar: React.FC = () => {
             >
               Guidelines
             </Link>
+            <Link
+              to="/checklist"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive('/checklist') 
+                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+              }`}
+            >
+              Checklist
+            </Link>
 
             {/* Theme Toggle */}
             <button
@@ -220,6 +230,17 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Guidelines
+              </Link>
+              <Link
+                to="/checklist"
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActive('/checklist') 
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+                    : 'text-gray-700 dark:text-gray-300'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                Checklist
               </Link>
               
               {state.user ? (
