@@ -39,7 +39,7 @@ const Articles: React.FC = () => {
     'Other'
   ];
 
-  const API_BASE = 'http://localhost:3001/api';
+  const API_BASE = 'bridge-server.railway.internal/api';
 
   useEffect(() => {
     fetchArticles();
