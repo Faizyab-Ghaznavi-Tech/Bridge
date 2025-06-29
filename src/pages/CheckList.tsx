@@ -101,9 +101,22 @@ const apaChecklist = [
   },
 ];
 
+const highlightKeywords = (text: string) => {
+  // Add icons and highlight for key APA terms and warnings
+  return text
+    // Highlight "NEVER", "AVOID", "NOT", "ALWAYS", "MUST", "SUGGESTED"
+    .replace(/\b(NEVER|AVOID|NOT|ALWAYS|MUST|SUGGESTED)\b/gi, '<span class="font-bold text-red-600 dark:text-red-400"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#ef4444"/><path d="M10 5v6m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
+    // Highlight "Tip", "Check", "Correct", "Clarity", "Key", "Important"
+    .replace(/\b(Tip|Check|Correct|Clarity|Key|Important)\b/gi, '<span class="font-bold text-blue-600 dark:text-blue-300"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#38bdf8"/><path d="M10 6v4m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
+    // Highlight "Example", "e.g."
+    .replace(/\b(Example|e\.g\.)\b/gi, '<span class="font-semibold text-teal-600 dark:text-teal-400"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#2dd4bf"/><path d="M7 10l3 3 3-6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
+    // Bold key APA terms
+    .replace(/\b(APA|paraphrase|citation|reference|quote|block quote|acronym|author|journal|volume|page number|italicize|capitalize|plural|singular|ampersand|initials|contractions|transitional sentences|compound words|data|datum)\b/gi, '<span class="font-semibold text-indigo-700 dark:text-indigo-300">$1</span>');
+};
+
 const CheckList: React.FC = () => {
   useScrollReveal();
-  
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-teal-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
       <section className="relative overflow-hidden py-20">
@@ -143,7 +156,9 @@ const CheckList: React.FC = () => {
                     <span className="mt-1 w-4 h-4 flex-shrink-0 rounded-full bg-gradient-to-br from-blue-200 to-teal-200 dark:from-blue-900 dark:to-teal-900 flex items-center justify-center">
                       <svg width="14" height="14" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#38bdf8"/><path d="M6 10.5l2.5 2.5L14 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </span>
-                    <span>{item}</span>
+                    <span
+                      dangerouslySetInnerHTML={{ __html: highlightKeywords(item) }}
+                    />
                   </li>
                 ))}
               </ul>

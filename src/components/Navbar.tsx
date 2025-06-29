@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, Menu, X, Sun, Moon, User, LogOut } from 'lucide-react';
+import { BookOpen, Menu, X, Sun, Moon, User, LogOut, ChevronDown, FileText } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showGuidelinesMenu, setShowGuidelinesMenu] = useState(false);
   const { state, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -75,26 +76,46 @@ const Navbar: React.FC = () => {
             >
               About
             </Link>
-            <Link
-              to="/articles-types"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isActive('/articles-types') 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-              }`}
-            >
-              Guidelines
-            </Link>
-            <Link
-              to="/checklist"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isActive('/checklist') 
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
-                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-              }`}
-            >
-              Checklist
-            </Link>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowGuidelinesMenu((v) => !v)}
+                className={`px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 transition-colors ${
+                  isActive('/articles-types') || isActive('/checklist')
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Guidelines
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {showGuidelinesMenu && (
+                <div className="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl z-50 py-2 border dark:border-gray-700 dropdown-animate ring-1 ring-blue-100 dark:ring-blue-900/30">
+                  <Link
+                    to="/articles-types"
+                    className="flex items-center gap-3 px-5 py-3 text-base font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200"
+                    onClick={() => {
+                      setShowGuidelinesMenu(false);
+                      setIsOpen(false);
+                    }}
+                  >
+                    <BookOpen className="w-5 h-5 text-blue-500 dark:text-blue-300" />
+                    Article Types & Author Guidelines
+                  </Link>
+                  <Link
+                    to="/checklist"
+                    className="flex items-center gap-3 px-5 py-3 text-base font-medium text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 rounded-lg transition-all duration-200"
+                    onClick={() => {
+                      setShowGuidelinesMenu(false);
+                      setIsOpen(false);
+                    }}
+                  >
+                    <FileText className="w-5 h-5 text-teal-500 dark:text-teal-300" />
+                    Manuscript Checklist
+                  </Link>
+                </div>
+              )}
+            </div>
 
             {/* Theme Toggle */}
             <button
@@ -178,7 +199,7 @@ const Navbar: React.FC = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t dark:border-gray-700">
               <Link
                 to="/"
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 rounded-md textbase font-medium ${
                   isActive('/') 
                     ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
                     : 'text-gray-700 dark:text-gray-300'
@@ -189,7 +210,7 @@ const Navbar: React.FC = () => {
               </Link>
               <Link
                 to="/articles"
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 rounded-md textbase font-medium ${
                   isActive('/articles') 
                     ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
                     : 'text-gray-700 dark:text-gray-300'
@@ -200,7 +221,7 @@ const Navbar: React.FC = () => {
               </Link>
               <Link
   to="/editorial-board"
-  className={`block px-3 py-2 rounded-md text-base font-medium ${
+  className={`block px-3 py-2 rounded-md textbase font-medium ${
     isActive('/editorial-board') 
       ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
       : 'text-gray-700 dark:text-gray-300'
@@ -211,7 +232,7 @@ const Navbar: React.FC = () => {
 </Link>
               <Link
                 to="/about"
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 rounded-md textbase font-medium ${
                   isActive('/about') 
                     ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
                     : 'text-gray-700 dark:text-gray-300'
@@ -220,34 +241,52 @@ const Navbar: React.FC = () => {
               >
                 About
               </Link>
-              <Link
-                to="/articles-types"
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  isActive('/articles-types') 
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
-                    : 'text-gray-700 dark:text-gray-300'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                Guidelines
-              </Link>
-              <Link
-                to="/checklist"
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  isActive('/checklist') 
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
-                    : 'text-gray-700 dark:text-gray-300'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                Checklist
-              </Link>
+              <div>
+    <button
+      type="button"
+      onClick={() => setShowGuidelinesMenu((v) => !v)}
+      className={`block w-full text-left px-3 py-2 rounded-md textbase font-medium flex items-center gap-1 ${
+        isActive('/articles-types') || isActive('/checklist')
+          ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+          : 'text-gray-700 dark:text-gray-300'
+      }`}
+    >
+      Guidelines
+      <ChevronDown className="w-4 h-4" />
+    </button>
+    {showGuidelinesMenu && (
+      <div className="pl-4 dropdown-animate">
+        <Link
+          to="/articles-types"
+          className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
+          onClick={() => {
+            setShowGuidelinesMenu(false);
+            setIsOpen(false);
+          }}
+        >
+          <BookOpen className="w-5 h-5 text-blue-500 dark:text-blue-300" />
+          Article Types & Author Guidelines
+        </Link>
+        <Link
+          to="/checklist"
+          className="flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-all duration-200"
+          onClick={() => {
+            setShowGuidelinesMenu(false);
+            setIsOpen(false);
+          }}
+        >
+          <FileText className="w-5 h-5 text-teal-500 dark:text-teal-300" />
+          Manuscript Checklist
+        </Link>
+      </div>
+    )}
+  </div>
               
               {state.user ? (
                 <>
                   <Link
                     to="/dashboard"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300"
+                    className="block px-3 py-2 rounded-md textbase font-medium text-gray-700 dark:text-gray-300"
                     onClick={() => setIsOpen(false)}
                   >
                     Dashboard
@@ -255,7 +294,7 @@ const Navbar: React.FC = () => {
                   {state.user.role === 'admin' && (
                     <Link
                       to="/admin"
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300"
+                      className="block px-3 py-2 rounded-md textbase font-medium text-gray-700 dark:text-gray-300"
                       onClick={() => setIsOpen(false)}
                     >
                       Admin Panel
@@ -266,7 +305,7 @@ const Navbar: React.FC = () => {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 dark:text-red-400"
+                    className="block w-full text-left px-3 py-2 rounded-md textbase font-medium text-red-600 dark:text-red-400"
                   >
                     Logout
                   </button>
@@ -275,14 +314,14 @@ const Navbar: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300"
+                    className="block px-3 py-2 rounded-md textbase font-medium text-gray-700 dark:text-gray-300"
                     onClick={() => setIsOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="block px-3 py-2 rounded-md text-base font-medium bg-gradient-to-r from-teal-400 to-blue-500 text-white shadow-lg hover:from-teal-500 hover:to-blue-700 transition-all duration-300"
+                    className="block px-3 py-2 rounded-md textbase font-medium bg-gradient-to-r from-teal-400 to-blue-500 text-white shadow-lg hover:from-teal-500 hover:to-blue-700 transition-all duration-300"
                     onClick={() => setIsOpen(false)}
                   >
                     Register
@@ -292,7 +331,7 @@ const Navbar: React.FC = () => {
               
               <button
                 onClick={toggleTheme}
-                className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300"
+                className="flex items-center space-x-2 px-3 py-2 rounded-md textbase font-medium text-gray-700 dark:text-gray-300"
               >
                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
@@ -306,3 +345,15 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+<style>
+{`
+  .dropdown-animate {
+    animation: dropdown-fade-in 0.25s cubic-bezier(.4,0,.2,1);
+    transform-origin: top left;
+  }
+  @keyframes dropdown-fade-in {
+    0% { opacity: 0; transform: scaleY(0.95) translateY(-10px);}
+    100% { opacity: 1; transform: scaleY(1) translateY(0);}
+  }
+`}
+</style>
