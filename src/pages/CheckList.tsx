@@ -101,18 +101,19 @@ const apaChecklist = [
   },
 ];
 
-const highlightKeywords = (text: string) => {
-  // Add icons and highlight for key APA terms and warnings
-  return text
-    // Highlight "NEVER", "AVOID", "NOT", "ALWAYS", "MUST", "SUGGESTED"
-    .replace(/\b(NEVER|AVOID|NOT|ALWAYS|MUST|SUGGESTED)\b/gi, '<span class="font-bold text-red-600 dark:text-red-400"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#ef4444"/><path d="M10 5v6m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
-    // Highlight "Tip", "Check", "Correct", "Clarity", "Key", "Important"
-    .replace(/\b(Tip|Check|Correct|Clarity|Key|Important)\b/gi, '<span class="font-bold text-blue-600 dark:text-blue-300"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#38bdf8"/><path d="M10 6v4m0 4h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
-    // Highlight "Example", "e.g."
-    .replace(/\b(Example|e\.g\.)\b/gi, '<span class="font-semibold text-teal-600 dark:text-teal-400"><svg class="inline-block mr-1 mb-1" width="16" height="16" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#2dd4bf"/><path d="M7 10l3 3 3-6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>$1</span>')
-    // Bold key APA terms
-    .replace(/\b(APA|paraphrase|citation|reference|quote|block quote|acronym|author|journal|volume|page number|italicize|capitalize|plural|singular|ampersand|initials|contractions|transitional sentences|compound words|data|datum)\b/gi, '<span class="font-semibold text-indigo-700 dark:text-indigo-300">$1</span>');
-};
+// Helper to get color classes based on card index
+const getColorClass = (idx: number) =>
+  idx % 2 === 0
+    ? {
+        border: "border-blue-400 dark:border-blue-600",
+        heading: "text-blue-400 dark:text-blue-600",
+        bullet: "before:bg-blue-400 dark:before:bg-blue-600"
+      }
+    : {
+        border: "border-teal-400 dark:border-teal-600",
+        heading: "text-teal-400 dark:text-teal-600",
+        bullet: "before:bg-teal-400 dark:before:bg-teal-600"
+      };
 
 const CheckList: React.FC = () => {
   useScrollReveal();
@@ -133,37 +134,32 @@ const CheckList: React.FC = () => {
 
       <section className="py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          {apaChecklist.map((section, idx) => (
-            <div
-              key={section.title}
-              className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 ${
-                idx % 2 === 0
-                  ? "border-blue-400 dark:border-blue-600"
-                  : "border-teal-400 dark:border-teal-600"
-              } reveal-on-scroll opacity-0`}
-            >
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                <span className="inline-block w-3 h-3 rounded-full"
-                  style={{
-                    background: idx % 2 === 0 ? "#60a5fa" : "#2dd4bf",
-                  }}
-                ></span>
-                {section.title}
-              </h2>
-              <ul className="list-none space-y-4 text-gray-700 dark:text-gray-200 text-base md:text-lg">
-                {section.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="mt-1 w-4 h-4 flex-shrink-0 rounded-full bg-gradient-to-br from-blue-200 to-teal-200 dark:from-blue-900 dark:to-teal-900 flex items-center justify-center">
-                      <svg width="14" height="14" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#38bdf8"/><path d="M6 10.5l2.5 2.5L14 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </span>
-                    <span
-                      dangerouslySetInnerHTML={{ __html: highlightKeywords(item) }}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {apaChecklist.map((section, idx) => {
+            const color = getColorClass(idx);
+            // Choose bullet class based on card color
+            const bulletClass =
+              idx % 2 === 0 ? "custom-blue-bullets" : "custom-teal-bullets";
+            return (
+              <div
+                key={section.title}
+                className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 ${color.border} reveal-on-scroll opacity-0`}
+              >
+                <h2 className={`text-2xl md:text-3xl font-bold mb-4 flex items-center gap-2 ${color.heading}`}>
+                  {section.title}
+                </h2>
+                <ul className={`list-disc list-inside text-gray-700 dark:text-gray-200 text-base md:text-lg space-y-4 text-justify ${bulletClass}`}>
+                  {section.items.map((item, i) => (
+                    <li
+                      key={i}
+                      className="pl-6"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -201,6 +197,24 @@ const CheckList: React.FC = () => {
           @keyframes gradient-move {
             0%,100% {background-position:0% 50%}
             50% {background-position:100% 50%}
+          }
+          /* Blue card bullets */
+          .custom-blue-bullets li::marker {
+            color: #60a5fa; /* blue-400 */
+          }
+          @media (prefers-color-scheme: dark) {
+            .custom-blue-bullets li::marker {
+              color: #2563eb; /* blue-600 */
+            }
+          }
+          /* Teal card bullets */
+          .custom-teal-bullets li::marker {
+            color: #2dd4bf; /* teal-400 */
+          }
+          @media (prefers-color-scheme: dark) {
+            .custom-teal-bullets li::marker {
+              color: #0d9488; /* teal-600 */
+            }
           }
         `}
       </style>

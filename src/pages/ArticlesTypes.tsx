@@ -75,13 +75,15 @@ const ArticlesTypes: React.FC = () => {
             id="article-summary"
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 border-blue-400 dark:border-blue-600 reveal-on-scroll opacity-0"
           >
-             <div className="flex items-center justify-center mb-4">
-                <FileText  className="w-12 h-12 text-blue-600 dark:text-teal-400" />
-              </div><h2 className="text-3xl font-bold text-blue-700 dark:text-teal-300 mb-4 text-center">Article Summary</h2>
-             
-            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed">
+            <div className="flex items-center justify-center mb-4">
+              <FileText className="w-12 h-12 text-blue-600 dark:text-teal-400" />
+            </div>
+            <h2 className="text-3xl font-bold text-blue-700 dark:text-teal-300 mb-4 text-center">Article Summary</h2>
+            
+            {/* Add text-justify here */}
+            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed text-justify">
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold text-xl">
-                <span className="text-2xl">🔍</span> Purpose:
+                <span className="text-2xl"></span> Purpose
               </div>
               <p className="text-gray-700 dark:text-gray-300">
                 Graduate students collaborate with educational researchers (or independently reach out) to summarize published research articles.<br />
@@ -89,14 +91,14 @@ const ArticlesTypes: React.FC = () => {
                 This helps bridge the gap between research and real-world teaching.
               </p>
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold">
-                <span className="text-2xl">👤</span> Authorship Rules:
+                <span className="text-2xl"></span> Authorship Rules
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
+              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
                 <li>Single-author only to support individual student growth.</li>
                 <li>Exception: Two authors allowed only if the article is translated into another language and language expertise is available during review.</li>
               </ul>
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold">
-                <span className="text-2xl">✔️</span> Accepted Topics (examples):
+                <span className="text-2xl"></span> Accepted Topics (examples)
               </div>
               <div className="flex flex-wrap gap-2 mb-2">
                 {[
@@ -104,51 +106,51 @@ const ArticlesTypes: React.FC = () => {
                   "Student engagement", "Special needs", "Teacher leadership", "Gifted education", "Online learning",
                   "Teaching stories", "Core subjects: math, science, social studies, reading, language arts, library science, special education, art, and technology"
                 ].map(topic => (
-                  <span key={topic} className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200 text-xs font-medium shadow-sm">
-                    <Star className="w-3 h-3 mr-1 text-blue-400 dark:text-blue-300" /> {topic}
+                  <span key={topic} className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-white text-xs font-medium shadow-sm">
+                    {topic}
                   </span>
                 ))}
               </div>
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold mt-4">
-                <span className="text-2xl">📄</span> Manuscript Guidelines
+                <span className="text-2xl"></span> Manuscript Guidelines
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
+              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
                 <li>
-                  <span className="font-semibold">Submission:</span> Format: .doc or .rtf files.<br />
+                  <span className="font-semibold">Submission</span> Format .doc or .rtf files.<br />
                   Submit on the journal website (or email Dr. Denise McDonald: <a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a> until the site is live)
                 </li>
                 <li>
-                  <span className="font-semibold">Format Requirements:</span> Double-spaced, 1-inch margins, Non-serif font (Calibri or Arial), size 12, APA 7th edition style, Paginate pages (centered, at bottom)
+                  <span className="font-semibold">Format Requirements</span> Double-spaced, 1-inch margins, Non-serif font (Calibri or Arial), size 12, APA 7th edition style, Paginate pages (centered, at bottom)
                 </li>
                 <li>
                   <span className="font-semibold">Length:</span> 1,200–2,000 words (including references)
                 </li>
                 <li>
-                  <span className="font-semibold">Required Headings:</span> Title (must differ from the original article’s title), Referenced Article Citation, Article Link (if available), Introduction, Background, Literature, Findings, Implications/Applications, Summary/Concluding Comments, References (only the most relevant)
+                  <span className="font-semibold">Required Headings</span> Title (must differ from the original article’s title), Referenced Article Citation, Article Link (if available), Introduction, Background, Literature, Findings, Implications/Applications, Summary/Concluding Comments, References (only the most relevant)
                 </li>
                 <li>
-                  <span className="font-semibold">Before Submission:</span> Spell-check and grammar-check. All citations must be listed in the reference section and vice versa
+                  <span className="font-semibold">Before Submission</span> Spell-check and grammar-check. All citations must be listed in the reference section and vice versa
                 </li>
                 <li>
-                  <span className="font-semibold">Additional Documents Required:</span>
-                  <ul className="list-disc ml-6">
+                  <span className="font-semibold">Additional Documents Required</span>
+                  <ul className="list-disc ml-6 custom-blue-bullets">
                     <li>
                       <span className="font-semibold">Contact Information Form</span> (submitted separately): Name, Affiliation (if applicable), Summary title (different from original), Full article citation, Word count (including references), 40-word max abstract, 3 keywords, Phone number and email, 50-word author biography
                     </li>
                     <li>
-                      <span className="font-semibold">Researcher Agreement Document:</span> Must be signed by the original article’s author to approve use, provide access (PDF or link), and verify content accuracy in the summary
+                      <span className="font-semibold">Researcher Agreement Document</span> Must be signed by the original article’s author to approve use, provide access (PDF or link), and verify content accuracy in the summary
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <span className="font-semibold">Review Process:</span> Double-blind review by two referees. Feedback and revisions are encouraged. Review duration: may take several months
+                  <span className="font-semibold">Review Process</span> Double-blind review by two referees. Feedback and revisions are encouraged. Review duration: may take several months
                 </li>
                 <li>
-                  <span className="font-semibold">Resubmissions:</span> 2 months to revise. Highlight changes (NO tracked changes). Include optional response letter to reviewers. Submit revised manuscript with all supporting documents
+                  <span className="font-semibold">Resubmissions</span> 2 months to revise. Highlight changes (NO tracked changes). Include optional response letter to reviewers. Submit revised manuscript with all supporting documents
                 </li>
               </ul>
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold mt-2">
-                <span className="text-2xl">🔖</span> Pro Tip:
+                <span className="text-2xl"></span> Pro Tip
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-2 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
                 Strongly encouraged to review the provided Article Summary Example PDF.
@@ -165,45 +167,45 @@ const ArticlesTypes: React.FC = () => {
                 <GraduationCap className="w-12 h-12 text-teal-600 dark:text-teal-400" />
               </div><h2 className="text-3xl font-bold text-teal-700 dark:text-teal-300 mb-4 text-center">Transition from Educator to Researcher</h2>
              
-            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed">
+            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed text-justify">
               <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold">
-                <span className="text-2xl">🔍</span> Purpose:
+                <span className="text-2xl"></span> Purpose
               </div>
               <p className="text-gray-700 dark:text-gray-300">
                 Graduate students share personal narratives about their journey from being a teacher to becoming a researcher.<br />
                 Especially helpful for doctoral students making the identity shift during dissertation work.
               </p>
               <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold">
-                <span className="text-2xl">👤</span> Authorship Rules:
+                <span className="text-2xl"></span> Authorship Rules
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
+              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-teal-bullets">
                 <li>Single-author only</li>
               </ul>
               <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold mt-4">
-                <span className="text-2xl">📄</span> Narrative Guidelines
+                <span className="text-2xl"></span> Narrative Guidelines
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
+              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-teal-bullets ">
                 <li>
-                  <span className="font-semibold">Submission:</span> Format: .doc or .rtf. Submit via email to Dr. Denise McDonald (<a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a>)
+                  <span className="font-semibold">Submission</span> Format .doc or .rtf. Submit via email to Dr. Denise McDonald (<a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a>)
                 </li>
                 <li>
-                  <span className="font-semibold">Format Requirements:</span> Double-spaced, 1-inch margins, Non-serif font (Calibri or Arial), size 12, APA 7th edition style, Paginate pages (bottom-center)
+                  <span className="font-semibold">Format Requirements</span> Double-spaced, 1-inch margins, Non-serif font (Calibri or Arial), size 12, APA 7th edition style, Paginate pages (bottom-center)
                 </li>
                 <li>
-                  <span className="font-semibold">Length:</span> 500–800 words (including any references)
+                  <span className="font-semibold">Length</span> 500–800 words (including any references)
                 </li>
                 <li>
-                  <span className="font-semibold">Additional Document: Contact Info Form</span> (submitted separately): Name, Affiliation (if applicable), Narrative title, Word count, 30-word max abstract, 3 keywords, Phone number and email, 50-word author biography
+                  <span className="font-semibold">Additional Document Contact Info Form</span> (submitted separately): Name, Affiliation (if applicable), Narrative title, Word count, 30-word max abstract, 3 keywords, Phone number and email, 50-word author biography
                 </li>
                 <li>
-                  <span className="font-semibold">Review Process:</span> Double-blind review. Feedback encouraged; revisions may be required. Review can take several months
+                  <span className="font-semibold">Review Process</span> Double-blind review. Feedback encouraged; revisions may be required. Review can take several months
                 </li>
                 <li>
-                  <span className="font-semibold">Resubmission:</span> 1 month to revise. Highlight changes (NO tracked changes). Submit revised narrative with updated documents
+                  <span className="font-semibold">Resubmission</span> 1 month to revise. Highlight changes (NO tracked changes). Submit revised narrative with updated documents
                 </li>
               </ul>
               <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold mt-2">
-                <span className="text-2xl">🔖</span> Pro Tip:
+                <span className="text-2xl"></span> Pro Tip
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-2 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
                 Review the Narrative Example provided by the journal.
@@ -248,6 +250,24 @@ const ArticlesTypes: React.FC = () => {
           @keyframes gradient-move {
             0%,100% {background-position:0% 50%}
             50% {background-position:100% 50%}
+          }
+          /* Blue card bullets */
+          .custom-blue-bullets > li::marker {
+            color: #60a5fa; /* blue-400 */
+          }
+          @media (prefers-color-scheme: dark) {
+            .custom-blue-bullets > li::marker {
+              color: #2563eb; /* blue-600 */
+            }
+          }
+          /* Teal card bullets */
+          .custom-teal-bullets > li::marker {
+            color: #2dd4bf; /* teal-400 */
+          }
+          @media (prefers-color-scheme: dark) {
+            .custom-teal-bullets > li::marker {
+              color: #0d9488; /* teal-600 */
+            }
           }
         `}
       </style>

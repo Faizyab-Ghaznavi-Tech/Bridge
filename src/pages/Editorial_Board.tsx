@@ -24,13 +24,18 @@ const editors: {
   members: { name: string; role: string; institution?: string }[];
 }[] = [
   {
-    title: 'Editors',
+    title: 'Editor',
     members: [
       {
         name: 'Denise McDonald (founder)',
         role: 'Professor Emeritus',
         institution: 'University of Houston – Clear Lake',
       },
+    ],
+  },
+  {
+    title: 'Editor',
+    members: [
       {
         name: 'Cheryl Craig',
         role: 'Professor, Houston Endowment Endowed Chair in Urban Education',
@@ -38,6 +43,12 @@ const editors: {
       },
     ],
   },
+];
+
+const associateEditors: {
+  title: string;
+  members: { name: string; role: string; institution?: string }[];
+}[] = [
   {
     title: 'Associate Editor',
     members: [
@@ -143,9 +154,29 @@ const EditorialBoard: React.FC = () => {
           </p>
 
           {/* Editors Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {editors.map((section) => (
-              <div key={section.title} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 reveal-on-scroll opacity-0">
+              <div key={section.title + section.members[0].name} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 reveal-on-scroll opacity-0">
+                <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300 mb-4 text-center">{section.title}</h2>
+                <ul className="space-y-4">
+                  {section.members.map((member) => (
+                    <li key={member.name} className="text-center">
+                      <span className="block text-lg font-semibold text-gray-900 dark:text-white">{member.name}</span>
+                      <span className="block text-sm text-gray-600 dark:text-gray-300">{member.role}</span>
+                      {member.institution && (
+                        <span className="block text-sm text-blue-600 dark:text-blue-400">{member.institution}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Associate & Assistant Editors Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {associateEditors.map((section) => (
+              <div key={section.title + section.members[0].name} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 reveal-on-scroll opacity-0">
                 <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300 mb-4 text-center">{section.title}</h2>
                 <ul className="space-y-4">
                   {section.members.map((member) => (

@@ -65,17 +65,17 @@ const About: React.FC = () => {
 			<section className="py-20 bg-gradient-to-br from-white via-blue-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
 				<div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-						<div className="reveal-on-scroll opacity-0 animate-fade-in-up">
+						<div className="reveal-on-scroll opacity-0 animate-fade-in-up text-justify">
 							<h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
 								Why BRIDGE?
 							</h2>
-							<p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+							<p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed text-justify">
 								The purpose of BRIDGE is to forward research information to the fingertips of teachers, focusing on classroom practice strategies that enhance pedagogy and student learning. The journal is a vehicle for disseminating research findings from diverse domains and multiple researchers, making them freely accessible to educators in all schooling environments.
 							</p>
 							<h3 className="text-2xl font-semibold text-blue-700 dark:text-blue-300 mb-4 mt-8">
 								Our Story
 							</h3>
-							<p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+							<p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed text-justify">
 								To meet the needs of practitioners for current, applicable research, founding editor{' '}
 								<span className="font-semibold text-blue-700 dark:text-blue-300">
 									Denise McDonald
@@ -88,28 +88,31 @@ const About: React.FC = () => {
 							<h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
 								Our Goals
 							</h3>
-							<ul className="text-lg text-gray-700 dark:text-gray-200 mb-6 list-disc list-inside space-y-2">
-								<li>
-									<span className="font-semibold text-blue-600 dark:text-blue-400">
-										Primary:
-									</span>{' '}
-									Offer an online, open-access journal that provides practitioners with research-based information crafted for a teacher readership.
-								</li>
-								<li>
-									<span className="font-semibold text-blue-600 dark:text-blue-400">
-										Secondary:
-									</span>{' '}
-
-									Provide graduate students, as emerging authors, an initial publication experience under the guidance of skilled researchers.
-								</li>
-							</ul>
-							<p className="text-gray-700 dark:text-gray-300 text-center mt-4">
-								Supported by endowments from the University of Houston – Clear Lake (Sandra
-								Johnson/Barrios Technology Endowed Professorship, Denise McDonald) and Texas A&M
-								(Houston Endowment Endowed Chair in Urban Education, Cheryl Craig), BRIDGE is a
-								collaborative effort to promote research, inform teachers, and support the scholarly
-								development of graduate students.
-							</p>
+							<div className="text-lg text-gray-700 dark:text-gray-200 mb-6 space-y-6 text-justify">
+    <div>
+        <span className="font-semibold text-blue-600 dark:text-blue-400 block">
+            Primary
+        </span>
+        <span className="block mt-1">
+            Offer an online, open-access journal that provides practitioners with research-based information crafted for a teacher readership.
+        </span>
+    </div>
+    <div>
+        <span className="font-semibold text-blue-600 dark:text-blue-400 block">
+            Secondary
+        </span>
+        <span className="block mt-1">
+            Provide graduate students, as emerging authors, an initial publication experience under the guidance of skilled researchers.
+        </span>
+    </div>
+</div>
+<p className="text-gray-700 dark:text-gray-300 text-left mt-4 text-justify">
+    Supported by endowments from the University of Houston – Clear Lake (Sandra
+    Johnson/Barrios Technology Endowed Professorship, Denise McDonald) and Texas A&M
+    (Houston Endowment Endowed Chair in Urban Education, Cheryl Craig), BRIDGE is a
+    collaborative effort to promote research, inform teachers, and support the scholarly
+    development of graduate students.
+</p>
 						</div>
 					</div>
 				</div>
