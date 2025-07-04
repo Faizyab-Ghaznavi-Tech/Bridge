@@ -80,20 +80,20 @@ const ArticlesTypes: React.FC = () => {
             </div>
             <h2 className="text-3xl font-bold text-blue-700 dark:text-teal-300 mb-4 text-center">Article Summary</h2>
             
-            {/* Add text-justify here */}
+            
             <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed text-justify">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold text-xl">
-                <span className="text-2xl"></span> Purpose
+              <div className="flex items-center  text-blue-700 dark:text-blue-300 font-semibold text-xl">
+                <span className="text-2xl"></span>Purpose
               </div>
               <p className="text-gray-700 dark:text-gray-300">
                 Graduate students collaborate with educational researchers (or independently reach out) to summarize published research articles.<br />
                 The goal is to translate academic research into practical, classroom-friendly language for educators.<br />
                 This helps bridge the gap between research and real-world teaching.
               </p>
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold">
+              <div className="flex items-center text-blue-700 dark:text-blue-300 font-semibold">
                 <span className="text-2xl"></span> Authorship Rules
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
+              <ul className="list-disc  text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
                 <li>Single-author only to support individual student growth.</li>
                 <li>Exception: Two authors allowed only if the article is translated into another language and language expertise is available during review.</li>
               </ul>
@@ -114,7 +114,7 @@ const ArticlesTypes: React.FC = () => {
               <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold mt-4">
                 <span className="text-2xl"></span> Manuscript Guidelines
               </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
+              <ul className="list-disc text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
                 <li>
                   <span className="font-semibold">Submission</span> Format .doc or .rtf files.<br />
                   Submit on the journal website (or email Dr. Denise McDonald: <a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a> until the site is live)
@@ -149,7 +149,7 @@ const ArticlesTypes: React.FC = () => {
                   <span className="font-semibold">Resubmissions</span> 2 months to revise. Highlight changes (NO tracked changes). Include optional response letter to reviewers. Submit revised manuscript with all supporting documents
                 </li>
               </ul>
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold mt-2">
+              <div className="flex items-center text-blue-700 dark:text-blue-300 font-semibold mt-2">
                 <span className="text-2xl"></span> Pro Tip
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-2 text-[1.08rem] md:text-[1.15rem] leading-relaxed">
@@ -168,25 +168,22 @@ const ArticlesTypes: React.FC = () => {
               </div><h2 className="text-3xl font-bold text-teal-700 dark:text-teal-300 mb-4 text-center">Transition from Educator to Researcher</h2>
              
             <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed text-justify">
-              <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold">
-                <span className="text-2xl"></span> Purpose
-              </div>
+              {/* Purpose */}
+              <div className="text-teal-700 dark:text-teal-300 font-semibold text-xl">Purpose</div>
               <p className="text-gray-700 dark:text-gray-300">
                 Graduate students share personal narratives about their journey from being a teacher to becoming a researcher.<br />
                 Especially helpful for doctoral students making the identity shift during dissertation work.
               </p>
-              <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold">
-                <span className="text-2xl"></span> Authorship Rules
-              </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-teal-bullets">
+              {/* Authorship Rules */}
+              <div className="text-teal-700 dark:text-teal-300 font-semibold text-xl mt-6">Authorship Rules</div>
+              <ul className="list-disc custom-teal-bullets text-gray-700 dark:text-gray-300 text-[1.08rem] md:text-[1.15rem] leading-relaxed pl-6">
                 <li>Single-author only</li>
               </ul>
-              <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold mt-4">
-                <span className="text-2xl"></span> Narrative Guidelines
-              </div>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-teal-bullets ">
+              {/* Narrative Guidelines */}
+              <div className="text-teal-700 dark:text-teal-300 font-semibold text-xl mt-6">Narrative Guidelines</div>
+              <ul className="list-disc custom-teal-bullets text-gray-700 dark:text-gray-300 text-[1.08rem] md:text-[1.15rem] leading-relaxed pl-6">
                 <li>
-                  <span className="font-semibold">Submission</span> Format .doc or .rtf. Submit via email to Dr. Denise McDonald (<a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a>)
+                  <span className="font-semibold">Submission:</span> Format .doc or .rtf. Submit via email to Dr. Denise McDonald (<a href="mailto:mcdonald@uhcl.edu" className="text-blue-600 underline">mcdonald@uhcl.edu</a>)
                 </li>
                 <li>
                   <span className="font-semibold">Format Requirements</span> Double-spaced, 1-inch margins, Non-serif font (Calibri or Arial), size 12, APA 7th edition style, Paginate pages (bottom-center)
@@ -204,7 +201,7 @@ const ArticlesTypes: React.FC = () => {
                   <span className="font-semibold">Resubmission</span> 1 month to revise. Highlight changes (NO tracked changes). Submit revised narrative with updated documents
                 </li>
               </ul>
-              <div className="flex items-center gap-2 text-teal-700 dark:text-teal-300 font-semibold mt-2">
+              <div className="flex items-center  text-teal-700 dark:text-teal-300 font-semibold mt-2">
                 <span className="text-2xl"></span> Pro Tip
               </div>
               <p className="text-gray-700 dark:text-gray-300 mb-2 text-[1.08rem] md:text-[1.15rem] leading-relaxed">

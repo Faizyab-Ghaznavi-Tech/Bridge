@@ -144,14 +144,14 @@ const CheckList: React.FC = () => {
                 key={section.title}
                 className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-l-8 ${color.border} reveal-on-scroll opacity-0`}
               >
-                <h2 className={`text-2xl md:text-3xl font-bold mb-4 flex items-center gap-2 ${color.heading}`}>
+                <h2 className={`text-2xl md:text-3xl font-bold mb-4 flex items-center  ${color.heading}`}>
                   {section.title}
                 </h2>
-                <ul className={`list-disc list-inside text-gray-700 dark:text-gray-200 text-base md:text-lg space-y-4 text-justify ${bulletClass}`}>
+                <ul className={`list-disc text-gray-700 pl-6 dark:text-gray-200 text-base md:text-lg space-y-4 ${bulletClass}`}>
                   {section.items.map((item, i) => (
                     <li
                       key={i}
-                      className="pl-6"
+                      
                     >
                       {item}
                     </li>
