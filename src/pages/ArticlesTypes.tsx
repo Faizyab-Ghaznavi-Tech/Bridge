@@ -86,8 +86,8 @@ const ArticlesTypes: React.FC = () => {
                 <span className="text-2xl"></span>Purpose
               </div>
               <p className="text-gray-700 dark:text-gray-300">
-                Graduate students collaborate with educational researchers (or independently reach out) to summarize published research articles.<br />
-                The goal is to translate academic research into practical, classroom-friendly language for educators.<br />
+                Graduate students collaborate with educational researchers (or independently reach out) to summarize published research articles.
+                The goal is to translate academic research into practical, classroom-friendly language for educators.
                 This helps bridge the gap between research and real-world teaching.
               </p>
               <div className="flex items-center text-blue-700 dark:text-blue-300 font-semibold">
@@ -171,7 +171,7 @@ const ArticlesTypes: React.FC = () => {
               {/* Purpose */}
               <div className="text-teal-700 dark:text-teal-300 font-semibold text-xl">Purpose</div>
               <p className="text-gray-700 dark:text-gray-300">
-                Graduate students share personal narratives about their journey from being a teacher to becoming a researcher.<br />
+                Graduate students share personal narratives about their journey from being a teacher to becoming a researcher.
                 Especially helpful for doctoral students making the identity shift during dissertation work.
               </p>
               {/* Authorship Rules */}
