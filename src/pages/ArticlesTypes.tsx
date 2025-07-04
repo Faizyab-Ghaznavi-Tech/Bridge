@@ -81,7 +81,7 @@ const ArticlesTypes: React.FC = () => {
             <h2 className="text-3xl font-bold text-blue-700 dark:text-teal-300 mb-4 text-center">Article Summary</h2>
             
             
-            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed text-justify">
+            <div className="space-y-4 text-[1.15rem] md:text-[1.25rem] leading-relaxed ">
               <div className="flex items-center  text-blue-700 dark:text-blue-300 font-semibold text-xl">
                 <span className="text-2xl"></span>Purpose
               </div>
@@ -111,7 +111,7 @@ const ArticlesTypes: React.FC = () => {
                   </span>
                 ))}
               </div>
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 font-semibold mt-4">
+              <div className="flex items-center  text-blue-700 dark:text-blue-300 font-semibold mt-4">
                 <span className="text-2xl"></span> Manuscript Guidelines
               </div>
               <ul className="list-disc text-gray-700 dark:text-gray-300 ml-6 text-[1.08rem] md:text-[1.15rem] leading-relaxed custom-blue-bullets">
