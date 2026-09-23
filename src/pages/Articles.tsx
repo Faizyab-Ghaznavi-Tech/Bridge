@@ -4,6 +4,7 @@ import ArticleCard from '../components/ArticleCard';
 import Footer from '../components/Footer'; // Add this import
 import toast from 'react-hot-toast';
 import { API_BASE } from '../config/api';
+import { readJsonResponse } from '../utils/http';
 
 interface Article {
   _id: string;
@@ -56,7 +57,11 @@ const Articles: React.FC = () => {
       if (selectedCategory !== 'all') params.append('category', selectedCategory);
 
       const response = await fetch(`${API_BASE}/articles?${params}`);
-      const data = await response.json();
+      const data = await readJsonResponse<{
+        articles: Article[];
+        totalPages: number;
+        message?: string;
+      }>(response);
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to fetch articles');

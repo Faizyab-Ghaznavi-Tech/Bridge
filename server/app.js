@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import articleRoutes from './routes/articles.js';
 import userRoutes from './routes/users.js';
+import { connectDB } from './db.js';
 
 dotenv.config();
 
@@ -36,9 +37,23 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/articles', articleRoutes);
-app.use('/api/users', userRoutes);
+const requireDB = async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({
+      message: process.env.MONGODB_URI
+        ? 'Database connection failed'
+        : 'MongoDB is not configured on the server',
+    });
+  }
+};
+
+app.use('/api/auth', requireDB, authRoutes);
+app.use('/api/articles', requireDB, articleRoutes);
+app.use('/api/users', requireDB, userRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ message: 'BRIDGEB API is running!' });

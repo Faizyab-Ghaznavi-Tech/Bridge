@@ -19,6 +19,7 @@ export const getMongoUri = () => process.env.MONGODB_URI || DEFAULT_MONGODB_URI;
 
 export const getMongoConnectionOptions = (uri) => ({
   dbName: resolveMongoDbName(uri),
+  serverSelectionTimeoutMS: Number(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || 10000),
 });
 
 export const maskMongoUri = (uri) =>
