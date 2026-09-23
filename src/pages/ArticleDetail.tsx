@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, User, Eye, Tag, ArrowLeft, Building } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { API_BASE } from '../config/api';
 
 interface Article {
   _id: string;
@@ -24,8 +25,6 @@ const ArticleDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const API_BASE = 'http://localhost:3001/api';
 
   useEffect(() => {
     fetchArticle();

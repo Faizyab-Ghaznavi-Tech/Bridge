@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import articleRoutes from './routes/articles.js';
 import userRoutes from './routes/users.js';
 import { createAdminUser } from './utils/createAdmin.js';
+import { getMongoConnectionOptions, getMongoUri } from './utils/mongodb.js';
 
 dotenv.config();
 
@@ -33,7 +34,8 @@ app.get('/api/health', (req, res) => {
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bridgeb');
+    const mongoUri = getMongoUri();
+    await mongoose.connect(mongoUri, getMongoConnectionOptions(mongoUri));
     console.log('✅ Connected to MongoDB');
     
     // Create admin user if it doesn't exist

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import RichTextEditor from '../components/RichTextEditor';
 import ArticleCard from '../components/ArticleCard';
 import toast from 'react-hot-toast';
+import { API_BASE } from '../config/api';
 
 interface Article {
   _id: string;
@@ -60,8 +61,6 @@ const Dashboard: React.FC = () => {
     'Early Childhood Education',
     'Other'
   ];
-
-  const API_BASE = 'http://localhost:3001/api';
 
   useEffect(() => {
     fetchStats();

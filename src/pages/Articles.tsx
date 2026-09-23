@@ -3,6 +3,7 @@ import { Search, Filter, BookOpen } from 'lucide-react';
 import ArticleCard from '../components/ArticleCard';
 import Footer from '../components/Footer'; // Add this import
 import toast from 'react-hot-toast';
+import { API_BASE } from '../config/api';
 
 interface Article {
   _id: string;
@@ -38,8 +39,6 @@ const Articles: React.FC = () => {
     'Early Childhood Education',
     'Other'
   ];
-
-  const API_BASE = 'https://bridge-server-production-208e.up.railway.app/api';
 
   useEffect(() => {
     fetchArticles();

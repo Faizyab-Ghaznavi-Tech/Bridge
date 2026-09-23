@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, FileText, Clock, CheckCircle, XCircle, BarChart3, Eye, Trash2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { API_BASE } from '../config/api';
 
 interface PendingArticle {
   _id: string;
@@ -44,8 +45,6 @@ const AdminDashboard: React.FC = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [allArticles, setAllArticles] = useState<any[]>([]);
   const [isArticlesLoading, setIsArticlesLoading] = useState(false);
-
-  const API_BASE = 'http://localhost:3001/api';
 
   useEffect(() => {
     if (state.user?.role === 'admin') {

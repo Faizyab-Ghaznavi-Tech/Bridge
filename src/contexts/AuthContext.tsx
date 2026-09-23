@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 
 interface User {
   id: string;
@@ -63,8 +64,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     token: localStorage.getItem('token'),
     isLoading: true
   });
-
-  const API_BASE = 'http://localhost:3001/api';
 
   useEffect(() => {
     const initAuth = async () => {
